@@ -33,13 +33,20 @@ public class Layer {
     }
     
     void move(Graphics depth){
-        if (x > (0 - screenWidth)){
-            draw(depth, 0, screenWidth + x, (0 - x), screenWidth);
-            draw(depth, screenWidth + x,  screenWidth - x, 0, screenWidth - x);
+        if(x < screenWidth){
+            draw(depth, 0, x, screenWidth - x, screenWidth);
+            // Head.
+            draw(depth, x, screenWidth, 0, screenWidth - x);
         } else {
             draw(depth, 0, screenWidth, 0, screenWidth);
         }
-        x = (x - change) % screenWidth;
+//        if (x > (0 - screenWidth)){
+//            draw(depth, 0, screenWidth + x, (0 - x), screenWidth);
+//            draw(depth, screenWidth + x,  screenWidth - x, 0, screenWidth - x);
+//        } else {
+//            draw(depth, 0, screenWidth, 0, screenWidth);
+//        }
+        x = (x + change) % screenWidth;
     }
     
     private void draw(Graphics depth, int startDrawX, int endDrawX, int startImage, int endImage){
