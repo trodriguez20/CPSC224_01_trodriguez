@@ -16,14 +16,14 @@ import java.awt.Image;
 public class Layer {
     private Image image;
     
-    private int screenWidth;
-    private int height;
-    private int x;
-    private int y;
+    private float screenWidth;
+    private float height;
+    private float x;
+    private float y;
     
-    private int change;
+    private float change;
     
-    Layer(int inScreenWidth, Image inImage, int inX, int inY, int inChange){
+    Layer(float inScreenWidth, Image inImage, float inX, float inY, float inChange){
         image = inImage;
         screenWidth = inScreenWidth;
         height = image.getHeight(null);
@@ -49,8 +49,8 @@ public class Layer {
         x = (x + change) % screenWidth;
     }
     
-    private void draw(Graphics depth, int startDrawX, int endDrawX, int startImage, int endImage){
-        depth.drawImage(image, startDrawX, y, endDrawX, y + height, startImage, 0, endImage, height, null);
+    private void draw(Graphics depth, float startDrawX, float endDrawX, float startImage, float endImage){
+        depth.drawImage(image, Math.round(startDrawX), Math.round(y), Math.round(endDrawX), Math.round(y + height), Math.round(startImage), 0, Math.round(endImage), Math.round(height), null);
     }
     
     

@@ -17,6 +17,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.awt.image.BufferedImage;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 import javax.imageio.*;
 
 
@@ -40,6 +42,7 @@ public class Parallax extends JFrame
        private Image mountains;
        private Image field;
        private BufferedImage[] runner = new BufferedImage[5];
+       private Image[] mothra = new Image[2];
        private int runCount = 0;
        private Layer mountLayer;
        private Layer fieldLayer;
@@ -47,11 +50,11 @@ public class Parallax extends JFrame
 	   
        private int delay = 100;
        protected Timer timer;
-
-       private int x = 1800;		// x position
-       private int y = 955;		// y position 
+		
        private int runnerX = 800;
        private int runnerY = 775;
+       private int butterX = 0;
+       private int butterY = 0;
        private int currentX = 0;
        private int currentY = 0;
        int numMouseClicks = 0;
@@ -67,6 +70,8 @@ public class Parallax extends JFrame
                 fence = ImageIO.read(new File("fence.png"));
                 mountains = ImageIO.read(new File("mountains.png"));
                 field = ImageIO.read(new File("horizon.png"));
+                mothra[0] = ImageIO.read(new File("mothra0.png"));
+                mothra[1] = ImageIO.read(new File("mothra1.png"));
                 for(int i = 0; i < 5; i++)
                 {
                     runner[i] = ImageIO.read(new File("dude" + i + ".gif"));
@@ -102,11 +107,12 @@ public class Parallax extends JFrame
             fieldLayer.move(g);
             if(numMouseClicks % 2 == 1)
             {
-                g.drawImage(runner[runCount], runnerX, runnerY, null);
-                runCount = (runCount + 1)%5;
+                g.drawImage(runner[runCount%5], runnerX, runnerY, null);
             }
             fenceLayer.move(g);
+            g.drawImage(mothra[runCount%2], butterX, butterY, null);
             g.drawImage(window, 0, 0, null);
+            runCount = (runCount + 1)%20;
        }
        
        private class MyMouseListener extends MouseAdapter
@@ -148,19 +154,17 @@ public class Parallax extends JFrame
             {
                 if(e.getX() < currentX)
                 {
-                    runnerX = runnerX - Math.abs((currentX - e.getX())/20);
-                    repaint();
+                    runnerX = max(0, runnerX - Math.abs((currentX - e.getX())/20));
+                } else {
+                    runnerX = min(1700, runnerX + Math.abs((e.getX() - currentX)/20));
                 }
-                if(e.getX() > currentX)
-                {
-                    runnerX = runnerX + Math.abs((e.getX() - currentX)/20);
-                    repaint();
-                }
+                repaint();
             }
 
             public void mouseMoved(MouseEvent e)
             {
-                
+                butterX = e.getX();
+                butterY = e.getY();
                 //mouseStates[6].setText("X: " + e.getX());
                 //mouseStates[7].setText("Y: " + e.getY());       
             }
