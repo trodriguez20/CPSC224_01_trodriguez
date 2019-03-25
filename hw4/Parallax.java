@@ -49,12 +49,13 @@ public class Parallax extends JFrame
        private Image mountains;
        private Image field;
        private BufferedImage[] runner = new BufferedImage[5];
-       private Image[] mothra = new Image[2];
+       private Image[] mothra = new Image[3];
        private int runCount = 0;
        private Layer mountLayer;
        private Layer fieldLayer;
        private Layer fenceLayer;
 	   
+       private boolean laser = false;
        private int delay = 100;
        protected Timer timer;
        //variables for (x,y) location of stick figure
@@ -80,7 +81,8 @@ public class Parallax extends JFrame
                 mountains = ImageIO.read(new File("mountains.png"));
                 field = ImageIO.read(new File("horizon.png"));
                 mothra[0] = ImageIO.read(new File("mothra0.png"));
-                mothra[1] = ImageIO.read(new File("mothra1.png"));
+                mothra[1] = ImageIO.read(new File("mothra2.png"));
+                mothra[2] = ImageIO.read(new File("mothra1.png"));
                 for(int i = 0; i < 5; i++)
                 {
                     runner[i] = ImageIO.read(new File("dude" + i + ".gif"));
@@ -119,7 +121,12 @@ public class Parallax extends JFrame
                 g.drawImage(runner[runCount%5], runnerX, runnerY, null);
             }
             fenceLayer.move(g);
-            g.drawImage(mothra[runCount%2], butterX, butterY, null);
+            if(laser){
+                g.drawImage(mothra[2], runnerX + 100, butterY, null);
+            } else {
+                g.drawImage(mothra[runCount%2], butterX, butterY, null);
+            }
+            
             g.drawImage(window, 0, 0, null);
             runCount = (runCount + 1)%20;
        }
@@ -130,7 +137,13 @@ public class Parallax extends JFrame
             {
                currentX  = e.getX();
                currentY = e.getY();
+               laser = true;
             }   
+            
+            public void mouseReleased(MouseEvent e){
+                laser = false;
+            }
+            
             public void mouseClicked(MouseEvent e)
             {
                 numMouseClicks++;
