@@ -39,8 +39,9 @@ public class Parallax extends JFrame
        private Image fence;
        private Image mountains;
        private Image field;
-       private BufferedImage runner;
+       private BufferedImage[] runner = new BufferedImage[5];
    
+       private int runCount = 0;
        private Layer mountLayer;
        private Layer fieldLayer;
        private Layer fenceLayer;
@@ -65,15 +66,23 @@ public class Parallax extends JFrame
                 fence = ImageIO.read(new File("fence.png"));
                 mountains = ImageIO.read(new File("mountains.png"));
                 field = ImageIO.read(new File("horizon.png"));
-                runner = ImageIO.read(new File("dude.gif"));
+//                runner[0] = ImageIO.read(new File("dude0.gif"));
+//                runner[1] = ImageIO.read(new File("dude1.gif"));
+//                runner[2] = ImageIO.read(new File("dude2.gif"));
+//                runner[3] = ImageIO.read(new File("dude3.gif"));
+//                runner[4] = ImageIO.read(new File("dude4.gif"));
+                for(int i = 0; i < 5; i++){
+                    runner[i] = ImageIO.read(new File("dude" + i + ".gif"));
+                }
+                
             }
             catch(IOException e)
             {
                 System.out.println("Error opening image files");
             }
-            mountLayer = new Layer(2000, mountains, 0, 0, 5); 
-            fieldLayer = new Layer(2000, field, 0, 650, 10);
-            fenceLayer = new Layer(2000, fence, 0, 950, 20);
+            mountLayer = new Layer(2000, mountains, 0, 0, 2); 
+            fieldLayer = new Layer(2000, field, 0, 650, 15);
+            fenceLayer = new Layer(2000, fence, 0, 950, 25);
 
             timer = new Timer(delay, this);
             timer.start();		// start the timer
@@ -94,11 +103,13 @@ public class Parallax extends JFrame
             g.fillRect(0, 0, 2000, 1125);
             mountLayer.move(g);
             fieldLayer.move(g);
+            fenceLayer.move(g);
             if(numMouseClicks % 2 == 1)
             {
-                g.drawImage(runner, 800, 700, null);
+                g.drawImage(runner[runCount], 800, 775, null);
+                runCount = (runCount + 1)%5;
             }
-            fenceLayer.move(g);
+            
             g.drawImage(window, 0, 0, null);
        }
        
