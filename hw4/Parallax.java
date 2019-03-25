@@ -11,67 +11,86 @@ import java.awt.Color;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 import javax.swing.Timer;
+import java.io.*;
+import javax.imageio.*;
 
-public class Parallax extends JFrame 
+public class Parallax extends JFrame
 {
-   private int WINDOW_WIDTH = 2000;
-   private int WINDOW_HEIGHT = 1180;
-   private JPanel fencePanel;
-   private JLabel fenceImage;
-   private JPanel windowPanel;
-   private JLabel windowImage;
+    
    
    public Parallax()
    {
-       //set Title
-       JFrame frame = new JFrame("Motion Parallax");
-       
-       //set Size
-       frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-       frame.setResizable(false);
-       
-       // Specify an action for the close button.
-       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       
-       
-       buildFencePanel();
-       buildWindowPanel();
-       
-       //add(fencePanel, BorderLayout.SOUTH);
-       //add(windowPanel, BorderLayout.CENTER);
-       frame.add(fencePanel);
-       frame.add(windowPanel);
-       //
-       pack();
-       frame.setVisible(true);
+      JFrame frame = new JFrame( "Motion Parrallax" );
+      frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+      fencePanel fp = new fencePanel(); 
+      frame.add(fp);
+      frame.setSize( 2000, 1180 ); // set frame size
+      frame.setResizable(false);
+      frame.setVisible( true ); // display frame
    }
    
-//   public void draw(Graphics g)
-//   {
-//       Image window = ImageLoader.loadImage(this, "window.png");
-//       g.drawImage(window, 2000, 1125);
-//   }
-   private void buildFencePanel()
+   public static void main( String args[] )
    {
-       fencePanel = new JPanel();
-       ImageIcon fence;
-       fence = new ImageIcon("fence.png");
-       fenceImage = new JLabel(fence);
-       fencePanel.add(fenceImage);
+	   new Parallax();
    }
-   
-   private void buildWindowPanel()
+}
+
+// class BallPanel
+
+class fencePanel extends JPanel implements ActionListener
+{
+   private Image window;
+   private Image fence;
+   private int delay = 10;
+   protected Timer timer;
+
+   private int x = 1800;		// x position
+   private int y = 955;		// y position
+   private int halfFence = 15;	// ball radius
+
+   private int dx = 2;		// increment amount (x coord)
+   //private int dy = 2;		// increment amount (y coord)
+
+   public fencePanel()
    {
-       windowPanel = new JPanel();
-       ImageIcon window;
-       window = new ImageIcon("window.png");
-       windowImage = new JLabel(window);
-       windowPanel.add(windowImage);
+        try
+      {
+          window = ImageIO.read(new File("window.png"));
+          fence = ImageIO.read(new File("fence.png"));
+      }
+      catch(IOException e)
+      {
+          System.out.println("Error opening image files");
+      }
+      timer = new Timer(delay, this);
+	timer.start();		// start the timer
    }
-   
-    public static void main(String[] args) 
-    {
-        new Parallax();
-    }
-    
+
+   public void actionPerformed(ActionEvent e)
+   // will run when the timer fires
+   {
+	repaint();
+   }
+
+   // draw rectangles and arcs
+   public void paintComponent( Graphics g )
+   {
+      super.paintComponent( g ); // call superclass's paintComponent 
+	//g.setColor(Color.red);
+
+	// check for boundaries
+	if (x < halfFence)			dx = Math.abs(dx);
+	if (x > getWidth() - halfFence)	dx = -Math.abs(dx);
+	//if (y < radius)			dy = Math.abs(dy);
+	//if (y > getHeight() - radius)	dy = -Math.abs(dy);
+
+	// adjust ball position
+	x -= dx;
+	//y += dy;
+	g.drawImage(fence, x-halfFence, y, null);
+        g.drawImage(window, 0, 0, null);
+	//g.fillOval(x - radius, y - radius, radius*2, radius*2);
+   }
+  
+
 }
