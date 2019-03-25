@@ -1,3 +1,8 @@
+/*
+ Homework 4
+ Due Date: 3/24/19
+ Names: Timothy Rodriguez & Jared Elliott
+*/
 package parallax;
 
 import java.awt.event.*;
@@ -11,6 +16,7 @@ import javax.swing.Timer;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.awt.image.BufferedImage;
 import javax.imageio.*;
 
 
@@ -33,6 +39,7 @@ public class Parallax extends JFrame
        private Image fence;
        private Image mountains;
        private Image field;
+       private BufferedImage runner;
    
        private Layer mountLayer;
        private Layer fieldLayer;
@@ -45,23 +52,24 @@ public class Parallax extends JFrame
        private int y = 955;		// y position       
        private int currentX = 0;
        private int currentY = 0;
-       
+       int numMouseClicks = 0;
        
        Random rand = new Random();
-       Color color1 = new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
+       Color color1 = new Color(153, 217, 234);
       
        public fencePanel()
        {
             try
             {
-                    window = ImageIO.read(new File("window.png"));
-                    fence = ImageIO.read(new File("fence.png"));
-                    mountains = ImageIO.read(new File("mountains.png"));
-                    field = ImageIO.read(new File("horizon.png"));
+                window = ImageIO.read(new File("window.png"));
+                fence = ImageIO.read(new File("fence.png"));
+                mountains = ImageIO.read(new File("mountains.png"));
+                field = ImageIO.read(new File("horizon.png"));
+                runner = ImageIO.read(new File("dude.gif"));
             }
             catch(IOException e)
             {
-                    System.out.println("Error opening image files");
+                System.out.println("Error opening image files");
             }
             mountLayer = new Layer(2000, mountains, 0, 0, 5); 
             fieldLayer = new Layer(2000, field, 0, 650, 10);
@@ -86,21 +94,12 @@ public class Parallax extends JFrame
             g.fillRect(0, 0, 2000, 1125);
             mountLayer.move(g);
             fieldLayer.move(g);
+            if(numMouseClicks % 2 == 1)
+            {
+                g.drawImage(runner, 800, 700, null);
+            }
             fenceLayer.move(g);
             g.drawImage(window, 0, 0, null);
-            
-           
-/*
-            // creates a mountain
-            g.setColor(color1);
-            g.fillPolygon(aValues, bValues, 3);
-
-            // creates another mountain
-            g.setColor(color2);
-            g.fillPolygon(xValues, yValues, 3);
-*/
-     
-
        }
        
        private class MyMouseListener extends MouseAdapter
@@ -111,14 +110,16 @@ public class Parallax extends JFrame
                setBackground(Color.GRAY);
                repaint();
                
-            }        
+            }    
+           */
             public void mouseClicked(MouseEvent e)
             {
-                color1 = new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                color2 = new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
+                //g.drawImage(runner, 800, 700, null);
+                numMouseClicks++;
                 repaint();
               
             }
+            /*
             public void mouseReleased(MouseEvent e)
             {
                 setBackground(Color.ORANGE);
