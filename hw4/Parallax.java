@@ -40,7 +40,6 @@ public class Parallax extends JFrame
        private Image mountains;
        private Image field;
        private BufferedImage[] runner = new BufferedImage[5];
-   
        private int runCount = 0;
        private Layer mountLayer;
        private Layer fieldLayer;
@@ -50,7 +49,9 @@ public class Parallax extends JFrame
        protected Timer timer;
 
        private int x = 1800;		// x position
-       private int y = 955;		// y position       
+       private int y = 955;		// y position 
+       private int runnerX = 800;
+       private int runnerY = 775;
        private int currentX = 0;
        private int currentY = 0;
        int numMouseClicks = 0;
@@ -66,28 +67,24 @@ public class Parallax extends JFrame
                 fence = ImageIO.read(new File("fence.png"));
                 mountains = ImageIO.read(new File("mountains.png"));
                 field = ImageIO.read(new File("horizon.png"));
-//                runner[0] = ImageIO.read(new File("dude0.gif"));
-//                runner[1] = ImageIO.read(new File("dude1.gif"));
-//                runner[2] = ImageIO.read(new File("dude2.gif"));
-//                runner[3] = ImageIO.read(new File("dude3.gif"));
-//                runner[4] = ImageIO.read(new File("dude4.gif"));
-                for(int i = 0; i < 5; i++){
+                for(int i = 0; i < 5; i++)
+                {
                     runner[i] = ImageIO.read(new File("dude" + i + ".gif"));
                 }
-                
             }
             catch(IOException e)
             {
                 System.out.println("Error opening image files");
             }
-            mountLayer = new Layer(2000, mountains, 0, 0, 2); 
-            fieldLayer = new Layer(2000, field, 0, 650, 15);
-            fenceLayer = new Layer(2000, fence, 0, 950, 25);
+            mountLayer = new Layer(2000, mountains, 0, 0, 5); 
+            fieldLayer = new Layer(2000, field, 0, 650, 10);
+            fenceLayer = new Layer(2000, fence, 0, 950, 20);
 
             timer = new Timer(delay, this);
             timer.start();		// start the timer
 
             addMouseListener(new MyMouseListener());
+            addMouseMotionListener(new MyMouseMotionListener());
        }
 
        public void actionPerformed(ActionEvent e)
@@ -103,32 +100,26 @@ public class Parallax extends JFrame
             g.fillRect(0, 0, 2000, 1125);
             mountLayer.move(g);
             fieldLayer.move(g);
-            fenceLayer.move(g);
             if(numMouseClicks % 2 == 1)
             {
-                g.drawImage(runner[runCount], 800, 775, null);
+                g.drawImage(runner[runCount], runnerX, runnerY, null);
                 runCount = (runCount + 1)%5;
             }
-            
+            fenceLayer.move(g);
             g.drawImage(window, 0, 0, null);
        }
        
        private class MyMouseListener extends MouseAdapter
        {
-           /*
             public void mousePressed(MouseEvent e)
             {
-               setBackground(Color.GRAY);
-               repaint();
-               
-            }    
-           */
+               currentX  = e.getX();
+               currentY = e.getY();
+            }   
             public void mouseClicked(MouseEvent e)
             {
-                //g.drawImage(runner, 800, 700, null);
                 numMouseClicks++;
                 repaint();
-              
             }
             /*
             public void mouseReleased(MouseEvent e)
@@ -149,6 +140,29 @@ public class Parallax extends JFrame
                 color1 = new Color(57, 86, 125);
                 //setBackground(Color.blue);
                 repaint();
+            }
+        }
+        private class MyMouseMotionListener implements MouseMotionListener
+        {
+            public void mouseDragged(MouseEvent e)
+            {
+                if(e.getX() < currentX)
+                {
+                    runnerX = runnerX - Math.abs((currentX - e.getX())/20);
+                    repaint();
+                }
+                if(e.getX() > currentX)
+                {
+                    runnerX = runnerX + Math.abs((e.getX() - currentX)/20);
+                    repaint();
+                }
+            }
+
+            public void mouseMoved(MouseEvent e)
+            {
+                
+                //mouseStates[6].setText("X: " + e.getX());
+                //mouseStates[7].setText("Y: " + e.getY());       
             }
         }
     }
