@@ -21,20 +21,27 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import javax.imageio.*;
 
-
+// This program creats a motion parallax of looking out a window of a car
+// into a beautiful valley with mouse listeners the creat a stick man
+// runnig away from the kaiju Mothra.
 public class Parallax extends JFrame
 {
     public Parallax()
     {
+        //set title of the JFrame to "Motion Parallax"
         setTitle("Motion Parallax");
+        // set the frame to exit on close
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //create a new panel of class fencePanel called fp
         fencePanel fp = new fencePanel();
         add(fp);
+       //set size of the JFrame windo to 2000x1175 pixels.
         setSize(2000, 1175);
         setResizable(false);
         setVisible(true);
     }
     
+    //creates 
     class fencePanel extends JPanel implements ActionListener
     {
        private Image window;
@@ -50,16 +57,18 @@ public class Parallax extends JFrame
 	   
        private int delay = 100;
        protected Timer timer;
-		
+       //variables for (x,y) location of stick figure
        private int runnerX = 800;
        private int runnerY = 775;
+       //variables for (x,y) location of mothra
        private int butterX = 0;
        private int butterY = 0;
+       //variables to help keep track of mouse (x,y) location
        private int currentX = 0;
        private int currentY = 0;
+       //intialize a counter to keep track of mouse clicks
        int numMouseClicks = 0;
-       
-       Random rand = new Random();
+       //creates a new colot variable to hold color of the background
        Color color1 = new Color(153, 217, 234);
       
        public fencePanel()
@@ -127,24 +136,14 @@ public class Parallax extends JFrame
                 numMouseClicks++;
                 repaint();
             }
-            /*
-            public void mouseReleased(MouseEvent e)
-            {
-                setBackground(Color.ORANGE);
-                repaint();
-            }
-			*/
             public void mouseEntered(MouseEvent e)
             {
 		color1 = new Color(153, 217, 234);
-                //setBackground(Color.cyan);
-                repaint();         
-                    
+                repaint();             
             }
             public void mouseExited(MouseEvent e)
             {
                 color1 = new Color(57, 86, 125);
-                //setBackground(Color.blue);
                 repaint();
             }
         }
@@ -164,16 +163,13 @@ public class Parallax extends JFrame
             public void mouseMoved(MouseEvent e)
             {
                 butterX = e.getX();
-                butterY = e.getY();
-                //mouseStates[6].setText("X: " + e.getX());
-                //mouseStates[7].setText("Y: " + e.getY());       
+                butterY = e.getY();      
             }
         }
     }
 
     public static void main(String[] args) 
     {
-        new Parallax();
-     
+        new Parallax();   
     }
 }
