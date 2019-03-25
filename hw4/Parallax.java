@@ -20,7 +20,7 @@ public class Parallax extends JFrame
    
    public Parallax()
    {
-      JFrame frame = new JFrame( "Motion Parrallax" );
+      JFrame frame = new JFrame( "Motion Parallax" );
       frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
       fencePanel fp = new fencePanel(); 
       frame.add(fp);
@@ -41,6 +41,12 @@ class fencePanel extends JPanel implements ActionListener
 {
    private Image window;
    private Image fence;
+   
+   private Image mountains;
+   private Image field;
+   private Layer mountLayer;
+   private Layer fieldLayer;
+   
    private int delay = 10;
    protected Timer timer;
 
@@ -57,11 +63,16 @@ class fencePanel extends JPanel implements ActionListener
       {
           window = ImageIO.read(new File("window.png"));
           fence = ImageIO.read(new File("fence.png"));
+          mountains = ImageIO.read(new File("mountains.png"));
+          field = ImageIO.read(new File("horizon.png"));
       }
       catch(IOException e)
       {
           System.out.println("Error opening image files");
       }
+        
+      mountLayer = new Layer(2000, mountains, 0, 0, 10); 
+      fieldLayer = new Layer(2000, field, 0, 655, 20);
       timer = new Timer(delay, this);
 	timer.start();		// start the timer
    }
@@ -77,7 +88,10 @@ class fencePanel extends JPanel implements ActionListener
    {
       super.paintComponent( g ); // call superclass's paintComponent 
 	//g.setColor(Color.red);
-
+        
+        mountLayer.move(g);
+        fieldLayer.move(g);
+        
 	// check for boundaries
 	if (x < halfFence)			dx = Math.abs(dx);
 	if (x > getWidth() - halfFence)	dx = -Math.abs(dx);

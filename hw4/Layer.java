@@ -1,5 +1,6 @@
+package parallax;
 
-import java.awt.Graphics2D;
+import java.awt.Graphics;
 import java.awt.Image;
 
 /*
@@ -22,7 +23,7 @@ public class Layer {
     
     private int change;
     
-    private Layer(int inScreenWidth, Image inImage, int inX, int inY, int inChange){
+    Layer(int inScreenWidth, Image inImage, int inX, int inY, int inChange){
         image = inImage;
         screenWidth = inScreenWidth;
         height = image.getHeight(null);
@@ -31,18 +32,17 @@ public class Layer {
         change = inChange;
     }
     
-    private void move(Graphics2D depth){
+    void move(Graphics depth){
         if (x > (0 - screenWidth)){
             draw(depth, 0, screenWidth + x, (0 - x), screenWidth);
-            draw(depth, screenWidth + x,  screenWidth, 0, screenWidth - x);
+            draw(depth, screenWidth + x,  screenWidth - x, 0, screenWidth - x);
         } else {
             draw(depth, 0, screenWidth, 0, screenWidth);
-            x = 0;
         }
         x = (x - change) % screenWidth;
     }
     
-    private void draw(Graphics2D depth, int startDrawX, int endDrawX, int startImage, int endImage){
+    private void draw(Graphics depth, int startDrawX, int endDrawX, int startImage, int endImage){
         depth.drawImage(image, startDrawX, y, endDrawX, y + height, startImage, 0, endImage, height, null);
     }
     
