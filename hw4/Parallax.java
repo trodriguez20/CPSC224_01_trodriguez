@@ -24,7 +24,7 @@ public class Parallax extends JFrame
       frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
       fencePanel fp = new fencePanel(); 
       frame.add(fp);
-      frame.setSize( 2000, 1180 ); // set frame size
+      frame.setSize( 2000, 1175 ); // set frame size
       frame.setResizable(false);
       frame.setVisible( true ); // display frame
    }
@@ -46,6 +46,7 @@ class fencePanel extends JPanel implements ActionListener
    private Image field;
    private Layer mountLayer;
    private Layer fieldLayer;
+   private Layer fenceLayer;
    
    private int delay = 10;
    protected Timer timer;
@@ -71,8 +72,9 @@ class fencePanel extends JPanel implements ActionListener
           System.out.println("Error opening image files");
       }
         
-      mountLayer = new Layer(2000, mountains, 0, 0, 10); 
-      fieldLayer = new Layer(2000, field, 0, 655, 20);
+      mountLayer = new Layer(2000, mountains, 0, 0, 5); 
+      fieldLayer = new Layer(2000, field, 0, 650, 10);
+      fenceLayer = new Layer(2000, fence, 0, 950, 20);
       timer = new Timer(delay, this);
 	timer.start();		// start the timer
    }
@@ -91,17 +93,18 @@ class fencePanel extends JPanel implements ActionListener
         
         mountLayer.move(g);
         fieldLayer.move(g);
+        fenceLayer.move(g);
         
 	// check for boundaries
-	if (x < halfFence)			dx = Math.abs(dx);
-	if (x > getWidth() - halfFence)	dx = -Math.abs(dx);
+	//if (x < halfFence)			dx = Math.abs(dx);
+	//if (x > getWidth() - halfFence)	dx = -Math.abs(dx);
 	//if (y < radius)			dy = Math.abs(dy);
 	//if (y > getHeight() - radius)	dy = -Math.abs(dy);
 
 	// adjust ball position
-	x -= dx;
+	//x -= dx;
 	//y += dy;
-	g.drawImage(fence, x-halfFence, y, null);
+	//g.drawImage(fence, x-halfFence, y, null);
         g.drawImage(window, 0, 0, null);
 	//g.fillOval(x - radius, y - radius, radius*2, radius*2);
    }
