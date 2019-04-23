@@ -1,10 +1,11 @@
 /*
- * Jared Elliott & Timothy Rodriguez
- * FINAL PROJECT
- * 4/16/19
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package tanks;
 
+import java.awt.EventQueue;
 import java.awt.event.*;
 import java.awt.Graphics;
 import java.awt.Color;
@@ -21,19 +22,24 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import javax.imageio.*;
 
-public class Tanks extends JFrame
-{
+/**
+ *
+ * @author Jared
+ */
+public class Tanks extends JFrame {
+    
     public Tanks()
     {
+        add(new titlePanel());
+        //add(new GameBoard());
+        
         setTitle("Tanks");
-        // set the frame to exit on close
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //create a new panel of class fencePanel called fp
-        titlePanel tp = new titlePanel();
-        add(tp);
-       //set size of the JFrame windo to 2000x1175 pixels.
         setSize(1600, 900);
+        
+        setLocationRelativeTo(null);
         setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
         setVisible(true);
     }
     
@@ -81,7 +87,8 @@ public class Tanks extends JFrame
        {
            public void actionPerformed(ActionEvent e)
            {
-            gameStatus = true;
+            //gamestatus = true;
+               add(new GameBoard());
            }
        }
        
@@ -93,10 +100,8 @@ public class Tanks extends JFrame
         }
        }
     }
-
-
-    public static void main(String[] args)
-    {
+    
+    public static void main(String[] args) {
         new Tanks();
     }
     
