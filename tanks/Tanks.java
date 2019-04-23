@@ -1,11 +1,10 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Jared Elliott & Timothy Rodriguez
+ * FINAL PROJECT
+ * 4/16/19
  */
 package tanks;
 
-import java.awt.EventQueue;
 import java.awt.event.*;
 import java.awt.Graphics;
 import java.awt.Color;
@@ -22,24 +21,19 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import javax.imageio.*;
 
-/**
- *
- * @author Jared
- */
-public class Tanks extends JFrame {
-    
+public class Tanks extends JFrame
+{
     public Tanks()
     {
-        add(new titlePanel());
-        //add(new GameBoard());
-        
         setTitle("Tanks");
-        setSize(1600, 900);
-        
-        setLocationRelativeTo(null);
-        setResizable(false);
+        // set the frame to exit on close
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+        //create a new panel of class fencePanel called fp
+        titlePanel tp = new titlePanel();
+        add(tp);
+       //set size of the JFrame windo to 2000x1175 pixels.
+        setSize(1600, 900);
+        setResizable(false);
         setVisible(true);
     }
     
@@ -52,10 +46,12 @@ public class Tanks extends JFrame {
        private JButton Exit;
        //private int delay = 100;
        //protected Timer timer;
-       public boolean gamestatus = false;
+       //public boolean gamestatus = false;
+       GameBoard gb =new GameBoard();
        
        public titlePanel()
        {
+           
            try
             {
                 title = ImageIO.read(new File("title.png"));
@@ -73,7 +69,6 @@ public class Tanks extends JFrame {
            add(Exit);
            start.addActionListener(new gameListener());
            Exit.addActionListener(new exitListener());
-           repaint();
        }
        
        public void paint( Graphics g )
@@ -87,8 +82,8 @@ public class Tanks extends JFrame {
        {
            public void actionPerformed(ActionEvent e)
            {
-            //gamestatus = true;
-               add(new GameBoard());
+            //gameStatus = true;
+               add(gb);
            }
        }
        
@@ -100,8 +95,10 @@ public class Tanks extends JFrame {
         }
        }
     }
-    
-    public static void main(String[] args) {
+
+
+    public static void main(String[] args)
+    {
         new Tanks();
     }
     
