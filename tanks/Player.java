@@ -24,7 +24,7 @@ public class Player {
     
     public Player()
     {
-        ImageIcon tankIcon = new ImageIcon("playerTank.png");
+        ImageIcon tankIcon = new ImageIcon("tankBottom.png");
         tankImage = tankIcon.getImage();
         
         width = tankImage.getWidth(null);
@@ -33,48 +33,53 @@ public class Player {
     
     public void move()
     {
-        X+= dx;
+        X += dx;
         Y += dy;
     }
     
     public void keyPressed(KeyEvent e) {
 
-        int key = e.getKeyCode();
+        char key = e.getKeyChar();
 
-        if (key == KeyEvent.VK_LEFT) {
+        System.out.println("key has been pressed");
+        if (key == 'a') {
+            System.out.println("left");
             dx = -2;
         }
 
-        if (key == KeyEvent.VK_RIGHT) {
+        if (key == 'd') {
+            System.out.println("right");
             dx = 2;
         }
 
-        if (key == KeyEvent.VK_UP) {
+        if (key == 'w') {
+            System.out.println("up");
             dy = -2;
         }
 
-        if (key == KeyEvent.VK_DOWN) {
+        if (key == 's') {
+            System.out.println("down");
             dy = 2;
         }
     }
 
     public void keyReleased(KeyEvent e) {
         
-        int key = e.getKeyCode();
+        char key = e.getKeyChar();
 
-        if (key == KeyEvent.VK_LEFT) {
+        if (key == 'a') {
             dx = 0;
         }
 
-        if (key == KeyEvent.VK_RIGHT) {
+        if (key == 'd') {
             dx = 0;
         }
 
-        if (key == KeyEvent.VK_UP) {
+        if (key == 'w') {
             dy = 0;
         }
 
-        if (key == KeyEvent.VK_DOWN) {
+        if (key == 's') {
             dy = 0;
         }
     }

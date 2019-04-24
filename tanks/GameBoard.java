@@ -5,8 +5,7 @@
  */
 package tanks;
 
-import java.awt.Image;
-import java.awt.event.*;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
@@ -17,7 +16,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import javax.swing.ImageIcon;
 
 /**
  *
@@ -35,6 +33,7 @@ public class GameBoard extends JPanel implements ActionListener {
     {
         addKeyListener(new TAdapter());
         setBackground(new Color(235, 232, 145));
+        setFocusable(true);
         
         player1 = new Player();
         
@@ -42,6 +41,7 @@ public class GameBoard extends JPanel implements ActionListener {
         timer.start();
     }
     
+    @Override
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
@@ -59,6 +59,7 @@ public class GameBoard extends JPanel implements ActionListener {
         g2d.drawImage(player1.tankImage, player1.X, player1.Y, this);
     }
     
+    @Override
     public void actionPerformed(ActionEvent e)
     {
         player1.move();
@@ -77,7 +78,9 @@ public class GameBoard extends JPanel implements ActionListener {
         
         @Override
         public void keyPressed(KeyEvent e) {
-            player1.keyReleased(e);
+            
+            System.out.println("key pressed lol");
+            player1.keyPressed(e);
         }
     }
 }
