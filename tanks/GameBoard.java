@@ -56,7 +56,8 @@ public class GameBoard extends JPanel implements ActionListener {
         
         Graphics2D g2d = (Graphics2D) g;
 
-        g2d.drawImage(player1.tankImage, player1.X, player1.Y, this);
+        g2d.drawImage(player1.tankD, player1.X, player1.Y, this);
+        g2d.drawImage(player1.tankT, player1.X+10, player1.Y+10, this);
     }
     
     @Override

@@ -23,9 +23,6 @@ public class titlePanel extends JPanel{
     private Image mascot;
     private JButton start;
     private JButton Exit;
-    //private int delay = 100;
-    //protected Timer timer;
-    //public boolean gamestatus = false;
        
     public titlePanel()
     {
