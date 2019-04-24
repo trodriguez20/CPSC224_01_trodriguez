@@ -5,7 +5,10 @@
  */
 package tanks;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -16,6 +19,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 
 public class titlePanel extends JPanel{
     private Image title;
@@ -23,12 +27,10 @@ public class titlePanel extends JPanel{
     private Image mascot;
     private JButton start;
     private JButton Exit;
-    //private int delay = 100;
-    //protected Timer timer;
-    //public boolean gamestatus = false;
        
     public titlePanel()
     {
+        setBackground(new Color(204, 204, 204));
         try
         {
             title = ImageIO.read(new File("title.png"));
@@ -42,6 +44,8 @@ public class titlePanel extends JPanel{
         setLayout(new FlowLayout());
         start=new JButton("START");
         Exit=new JButton("EXIT");
+        start.setFont(new Font("Dialog", 1, 60));
+        Exit.setFont(new Font("Dialog", 1, 60));
         add(start);
         add(Exit);
         start.addActionListener(new gameListener());
@@ -51,8 +55,8 @@ public class titlePanel extends JPanel{
        
     public void paint( Graphics g )
     {
-        g.drawImage(tank, 200, 100, null);
-        g.drawImage(mascot, 20, 250, null);
+        g.drawImage(tank, 150, -100, null);
+        g.drawImage(mascot, 0, -50, null);
         g.drawImage(title, 425, 100, null);
     }
        
