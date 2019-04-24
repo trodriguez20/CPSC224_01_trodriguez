@@ -16,6 +16,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -36,6 +37,7 @@ public class GameBoard extends JPanel implements ActionListener {
     {
         addKeyListener(new TAdapter());
         addMouseListener(new MyMouseListener());
+        addMouseMotionListener(new myMouseMotionListener());
         setBackground(new Color(235, 232, 145));
         setFocusable(true);
         
@@ -103,6 +105,19 @@ public class GameBoard extends JPanel implements ActionListener {
             {
                 player1.mousePressed(e);
             }
+    }
+    
+    
+    private class myMouseMotionListener implements MouseMotionListener{
+        @Override
+        public void mouseMoved(MouseEvent e){
+            
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            
+        }
     }
     
     // Class that activates the move commands for the Player Class

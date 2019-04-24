@@ -8,6 +8,7 @@ package tanks;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,7 @@ public class Player {
         tankImage = tankIcon.getImage();
         tankT = tankTurret.getImage();
         tankS = tankIconS.getImage();
+        tankD = tankImage;
         
         width = tankImage.getWidth(null);
         height = tankImage.getHeight(null);
@@ -50,12 +52,16 @@ public class Player {
     
     public void move()
     {
-        X += dx;
-        Y += dy;
+        if((X < 1590) && (X > 0))
+            X += dx;
+        if((Y < 850) && (Y > 0))
+            Y += dy;
     }
     
     public void mousePressed(MouseEvent e){
-        bullets.add(new Bullet(X + width, Y + height / 2, e.getX(), e.getY()));
+        if(bullets.size() < 5){
+           bullets.add(new Bullet(X + width/2, Y + height / 2, e.getX(), e.getY())); 
+        }
     }
     
     public void keyPressed(KeyEvent e) {
@@ -64,21 +70,29 @@ public class Player {
 
         if (key == 'a') {
             tankD=tankS;
+            if(X >= 1590)
+                X -= 2;
             dx = -2;
         }
 
         if (key == 'd') {
             tankD=tankS;
+            if(X <= 0)
+                X += 2;
             dx = 2;
         }
 
         if (key == 'w') {
             tankD=tankImage;
+            if(Y >= 850)
+                Y -= 2;
             dy = -2;
         }
 
         if (key == 's') {
             tankD=tankImage;
+            if(Y <= 0)
+                Y += 2;
             dy = 2;
         }
     }

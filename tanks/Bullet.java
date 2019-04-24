@@ -16,6 +16,7 @@ public class Bullet {
     protected double cos;
     protected double sin;
     protected boolean visible;
+    protected int bounce;
     
     public Bullet(int x, int y, int mouseX, int mouseY){
         this.x = x;
@@ -23,19 +24,30 @@ public class Bullet {
         this.hypotenuse = Math.sqrt((Math.pow((mouseX - x), 2) + Math.pow((mouseY - y), 2)));
         this.cos = (mouseX - x) /hypotenuse;
         this.sin = (mouseY - y) /hypotenuse;
+        bounce = 0;
         visible = true;
     }
     
     public void moveX(){
-        x += 4*cos;
-        if(x > 1600)
-            visible = false;
+        x += 8*cos;
+        if((x > 1590) || (x < 0)){
+            if(bounce > 0){
+                visible = false;
+            }
+            cos = -1 * cos;
+            bounce++;
+        }
     }
     
     public void moveY(){
-        y += 4*sin;
-        if(y > 900)
-            visible = false;
+        y += 8*sin;
+        if((y > 850) || (y < 0)){
+            if(bounce > 0){
+                visible = false;
+            }
+            sin = -1 * sin;
+            bounce++;
+        }
     }
     
     public int getX() {
