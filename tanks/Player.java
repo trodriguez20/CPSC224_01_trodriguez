@@ -7,9 +7,15 @@ package tanks;
 
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
+import java.util.ArrayList;
+import java.util.List;
 
-
+/**
+ *
+ * @author Jared
+ */
 public class Player {
     
     private int dx, dy;
@@ -19,6 +25,7 @@ public class Player {
     int height;
     int widthT;
     int heightT;
+    List<Bullet> bullets;
     Image tankImage;
     Image tankD;
     Image tankT;
@@ -30,13 +37,15 @@ public class Player {
         ImageIcon tankTurret = new ImageIcon("tankTop.png");
         ImageIcon tankIconS = new ImageIcon("tankBottomS.png");
         tankImage = tankIcon.getImage();
-        tankT=tankTurret.getImage();
-        tankS=tankIconS.getImage();
+        tankT = tankTurret.getImage();
+        tankS = tankIconS.getImage();
         
         width = tankImage.getWidth(null);
         height = tankImage.getHeight(null);
-        widthT=tankT.getWidth(null);
-        heightT=tankT.getHeight(null);
+        widthT = tankT.getWidth(null);
+        heightT = tankT.getHeight(null);
+        
+        bullets = new ArrayList<>();
     }
     
     public void move()
@@ -45,31 +54,30 @@ public class Player {
         Y += dy;
     }
     
+    public void mousePressed(MouseEvent e){
+        bullets.add(new Bullet(X + width, Y + height / 2, e.getX(), e.getY()));
+    }
+    
     public void keyPressed(KeyEvent e) {
 
         char key = e.getKeyChar();
 
-        System.out.println("key has been pressed");
         if (key == 'a') {
-            System.out.println("left");
             tankD=tankS;
             dx = -2;
         }
 
         if (key == 'd') {
-            System.out.println("right");
             tankD=tankS;
             dx = 2;
         }
 
         if (key == 'w') {
-            System.out.println("up");
             tankD=tankImage;
             dy = -2;
         }
 
         if (key == 's') {
-            System.out.println("down");
             tankD=tankImage;
             dy = 2;
         }

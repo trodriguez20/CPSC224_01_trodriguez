@@ -14,6 +14,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -32,6 +35,7 @@ public class GameBoard extends JPanel implements ActionListener {
     public GameBoard ()
     {
         addKeyListener(new TAdapter());
+        addMouseListener(new MyMouseListener());
         setBackground(new Color(235, 232, 145));
         setFocusable(true);
         
@@ -58,15 +62,47 @@ public class GameBoard extends JPanel implements ActionListener {
 
         g2d.drawImage(player1.tankD, player1.X, player1.Y, this);
         g2d.drawImage(player1.tankT, player1.X+10, player1.Y+10, this);
+        
+        List<Bullet> playerShots = player1.bullets;
+        
+        for (Bullet shot : playerShots) {
+            g2d.drawOval(shot.getX(), shot.getY(), 10, 10);
+        }
     }
     
     @Override
     public void actionPerformed(ActionEvent e)
     {
         player1.move();
-       
-       repaint(player1.X-1, player1.Y-1, 
-               player1.width+2, player1.height+2);
+        
+        moveBullets();
+        
+       repaint();
+    }
+    
+    private void moveBullets(){
+        List<Bullet> shots = player1.bullets;
+
+        for (int i = 0; i < shots.size(); i++) {
+
+            Bullet bullet = shots.get(i);
+
+            if (bullet.isVisible()) {
+
+                bullet.moveX();
+                bullet.moveY();
+            } else {
+                shots.remove(i);
+            }
+        }
+    }
+    
+    private class MyMouseListener extends MouseAdapter{
+        @Override
+        public void mouseClicked(MouseEvent e)
+            {
+                player1.mousePressed(e);
+            }
     }
     
     // Class that activates the move commands for the Player Class
@@ -79,8 +115,6 @@ public class GameBoard extends JPanel implements ActionListener {
         
         @Override
         public void keyPressed(KeyEvent e) {
-            
-            System.out.println("key pressed lol");
             player1.keyPressed(e);
         }
     }
