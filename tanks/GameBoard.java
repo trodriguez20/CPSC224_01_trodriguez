@@ -17,6 +17,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -62,8 +63,10 @@ public class GameBoard extends JPanel implements ActionListener {
         
         Graphics2D g2d = (Graphics2D) g;
 
+        AffineTransform at = AffineTransform.getTranslateInstance(player1.X+10, player1.Y+10);
+        at.rotate(Math.toRadians(player1.angle), player1.widthT/2, player1.heightT/2);
         g2d.drawImage(player1.tankD, player1.X, player1.Y, this);
-        g2d.drawImage(player1.tankT, player1.X+10, player1.Y+10, this);
+        g2d.drawImage(player1.tankT, at, this);
         
         List<Bullet> playerShots = player1.bullets;
         
@@ -111,12 +114,12 @@ public class GameBoard extends JPanel implements ActionListener {
     private class myMouseMotionListener implements MouseMotionListener{
         @Override
         public void mouseMoved(MouseEvent e){
-            
+            player1.mouseMoved(e);
         }
 
         @Override
         public void mouseDragged(MouseEvent e) {
-            
+            player1.mouseMoved(e);
         }
     }
     

@@ -6,12 +6,16 @@
 package tanks;
 
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import javax.swing.ImageIcon;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -29,16 +33,24 @@ public class Player {
     List<Bullet> bullets;
     Image tankImage;
     Image tankD;
-    Image tankT;
     Image tankS;
+    
+    BufferedImage tankT;
+    Point turretPos = new Point(X, Y);
+    double angle = 0;
     
     public Player()
     {
         ImageIcon tankIcon = new ImageIcon("tankBottom.png");
-        ImageIcon tankTurret = new ImageIcon("tankTop.png");
+        //ImageIcon tankTurret = new ImageIcon("tankTop.png");
         ImageIcon tankIconS = new ImageIcon("tankBottomS.png");
         tankImage = tankIcon.getImage();
-        tankT = tankTurret.getImage();
+        try{
+            tankT = ImageIO.read(new File("tankTop.png"));
+        } catch(IOException e) {
+        
+        }
+        
         tankS = tankIconS.getImage();
         tankD = tankImage;
         
@@ -52,10 +64,16 @@ public class Player {
     
     public void move()
     {
-        if((X < 1590) && (X > 0))
+        if((X < 1545) && (X > 0))
             X += dx;
-        if((Y < 850) && (Y > 0))
+        if((Y < 815) && (Y > 0))
             Y += dy;
+    }
+    
+    public void mouseMoved(MouseEvent e){
+        double a = X - turretPos.getX();
+        double b = Y - turretPos.getY();
+        angle = Math.atan2(b, a);
     }
     
     public void mousePressed(MouseEvent e){
@@ -70,7 +88,7 @@ public class Player {
 
         if (key == 'a') {
             tankD=tankS;
-            if(X >= 1590)
+            if(X >= 1545)
                 X -= 2;
             dx = -2;
         }
@@ -84,7 +102,7 @@ public class Player {
 
         if (key == 'w') {
             tankD=tankImage;
-            if(Y >= 850)
+            if(Y >= 815)
                 Y -= 2;
             dy = -2;
         }
