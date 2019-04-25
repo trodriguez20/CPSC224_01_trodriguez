@@ -12,7 +12,6 @@ package tanks;
 public class Bullet {
     protected int x;
     protected int y;
-    protected double hypotenuse;
     protected double cos;
     protected double sin;
     protected boolean visible;
@@ -21,9 +20,9 @@ public class Bullet {
     public Bullet(int x, int y, int mouseX, int mouseY){
         this.x = x;
         this.y = y;
-        this.hypotenuse = Math.sqrt((Math.pow((mouseX - x), 2) + Math.pow((mouseY - y), 2)));
-        this.cos = (mouseX - x) /hypotenuse;
-        this.sin = (mouseY - y) /hypotenuse;
+        double angle = Math.atan2(mouseY - y, mouseX - x);
+        this.cos = Math.cos(angle);
+        this.sin = Math.sin(angle);
         bounce = 0;
         visible = true;
     }
