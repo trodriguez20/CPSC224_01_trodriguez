@@ -64,7 +64,7 @@ public class GameBoard extends JPanel implements ActionListener {
         Graphics2D g2d = (Graphics2D) g;
 
         AffineTransform at = AffineTransform.getTranslateInstance(player1.X+10, player1.Y+10);
-        at.rotate(Math.toRadians(player1.angle), player1.widthT/2, player1.heightT/2);
+        at.rotate((player1.angle + Math.PI/2), player1.widthT/2, player1.heightT/2);
         g2d.drawImage(player1.tankD, player1.X, player1.Y, this);
         g2d.drawImage(player1.tankT, at, this);
         

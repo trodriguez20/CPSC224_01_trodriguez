@@ -36,7 +36,6 @@ public class Player {
     Image tankS;
     
     BufferedImage tankT;
-    Point turretPos = new Point(X, Y);
     double angle = 0;
     
     public Player()
@@ -71,8 +70,8 @@ public class Player {
     }
     
     public void mouseMoved(MouseEvent e){
-        double a = X - turretPos.getX();
-        double b = Y - turretPos.getY();
+        double a = e.getX() - X;
+        double b = e.getY() - Y;
         angle = Math.atan2(b, a);
     }
     
