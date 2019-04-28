@@ -32,7 +32,7 @@ public class Hangman
     {
         String Choice;
         Choice=JOptionPane.showInputDialog(null, "Enter 'r' for random chosen word " + "Enter 't' to enter your own " + "Enter 'e' to exit");
-        System.out.println("userChoice: " + Choice);
+        //System.out.println("userChoice: " + Choice);
         if(Choice.equals("r"))
         {
             String[] words={"apple", "bicyle", "chimp", "gundam", "eagle", "hippopotomonstrosesquippedaliophobia", "plane"};
