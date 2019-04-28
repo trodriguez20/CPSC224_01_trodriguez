@@ -52,7 +52,13 @@ public class GameBoard extends JPanel implements ActionListener {
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-
+        g.setColor(new Color(207, 163, 139));
+        g.fillRect(600, 600, 100, 200);
+        g.fillRect(0, 0, 1600, 50);
+        g.fillRect(0, 0, 50, 850);
+        g.fillRect(0, 815, 1600, 50);
+        g.fillRect(1545, 0, 50, 850);
+        g.setColor(Color.BLACK);
         draw(g);
         
         Toolkit.getDefaultToolkit().sync();
@@ -71,7 +77,7 @@ public class GameBoard extends JPanel implements ActionListener {
         List<Bullet> playerShots = player1.bullets;
         
         for (Bullet shot : playerShots) {
-            g2d.drawOval(shot.getX(), shot.getY(), 10, 10);
+            g2d.fillOval(shot.getX(), shot.getY(), 10, 10);
         }
     }
     
@@ -82,7 +88,7 @@ public class GameBoard extends JPanel implements ActionListener {
         
         moveBullets();
         
-       repaint();
+        repaint();
     }
     
     private void moveBullets(){
@@ -94,8 +100,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
             if (bullet.isVisible()) {
 
-                bullet.moveX();
-                bullet.moveY();
+                bullet.move();
             } else {
                 shots.remove(i);
             }

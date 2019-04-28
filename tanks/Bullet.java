@@ -5,6 +5,9 @@
  */
 package tanks;
 
+import java.awt.Color;
+import java.awt.Robot;
+
 /**
  *
  * @author Jared
@@ -15,6 +18,7 @@ public class Bullet {
     protected double cos;
     protected double sin;
     protected boolean visible;
+    protected boolean bounceTime = false;
     protected int bounce;
     
     public Bullet(int x, int y, int mouseX, int mouseY){
@@ -27,25 +31,51 @@ public class Bullet {
         visible = true;
     }
     
+    public void move(){
+        Color color = Color.BLACK;
+        try{
+            Robot rob = new Robot();
+            color = rob.getPixelColor((int) (x + (16*cos)), (int) (y + 30 + (16*sin)));
+        } catch (Exception evt) {
+            System.err.println(evt.getMessage());
+        }
+        if(color.getGreen() == 163)
+            bounceTime = true;
+        moveX();
+        moveY();
+    }
+    
     public void moveX(){
         x += 8*cos;
-        if((x > 1590) || (x < 0)){
-            if(bounce > 0){
-                visible = false;
+        if(bounceTime){
+            Color color = Color.BLACK;
+            try{
+                Robot rob = new Robot();
+                color = rob.getPixelColor((int) (x + (8*cos)), (int) (y + 30 + (8*sin)));
+            } catch (Exception evt) {
+                System.err.println(evt.getMessage());
             }
-            cos = -1 * cos;
-            bounce++;
+            if(color.getGreen() == 163){
+                if(bounce > 0){
+                    visible = false;
+                }
+                cos = -1 * cos;
+                bounce++;
+                bounceTime = false;
+            }
         }
+        
     }
     
     public void moveY(){
         y += 8*sin;
-        if((y > 850) || (y < 0)){
+        if(bounceTime){
             if(bounce > 0){
                 visible = false;
             }
             sin = -1 * sin;
             bounce++;
+            bounceTime = false;
         }
     }
     
