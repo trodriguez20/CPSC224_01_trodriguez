@@ -5,10 +5,8 @@
  */
 package tanks;
 
-import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -27,7 +25,7 @@ public class Player {
     
     private int dx, dy;
     int X = 100;
-    int Y = 100;
+    int Y = 60;
     int width;
     int height;
     int widthT;
@@ -36,9 +34,10 @@ public class Player {
     Image tankImage;
     Image tankD;
     Image tankS;
+    
     BufferedImage tankT;
+    Point turretPos = new Point(X, Y);
     double angle = 0;
-    boolean tankMove;
     
     public Player()
     {
@@ -54,7 +53,7 @@ public class Player {
         
         tankS = tankIconS.getImage();
         tankD = tankImage;
-        tankMove = true;
+        
         width = tankImage.getWidth(null);
         height = tankImage.getHeight(null);
         widthT = tankT.getWidth(null);
@@ -65,25 +64,15 @@ public class Player {
     
     public void move()
     {
-        Color color = Color.BLACK;
-        int centerX = X + 25;
-        int centerY = Y + 60;
-        try{
-            Robot rob = new Robot();
-            color = rob.getPixelColor(centerX + (15 * dx), centerY + (15 * dy));
-            
-        } catch (Exception evt) {
-            System.err.println(evt.getMessage());
-        }
-        if(color.getGreen() != 163){
+        if((X < 1545) && (X > 0))
             X += dx;
+        if((Y < 815) && (Y > 0))
             Y += dy;
-        }  
     }
     
     public void mouseMoved(MouseEvent e){
-        double a = e.getX() - X;
-        double b = e.getY() - Y;
+        double a = X + 10 - e.getX();
+        double b = Y + 10 - e.getY();
         angle = Math.atan2(b, a);
     }
     
@@ -96,32 +85,40 @@ public class Player {
     public void keyPressed(KeyEvent e) {
 
         char key = e.getKeyChar();
+
         if (key == 'a') {
-            dx = -2;
             tankD=tankS;
+            if(X >= 1545)
+                X -= 2;
+            dx = -2;
         }
 
         if (key == 'd') {
-            dx = 2;
             tankD=tankS;
+            if(X <= 0)
+                X += 2;
+            dx = 2;
         }
-        
+
         if (key == 'w') {
+            tankD=tankImage;
+            if(Y >= 815)
+                Y -= 2;
             dy = -2;
-            tankD=tankImage;
         }
-        
+
         if (key == 's') {
-            dy = 2;
             tankD=tankImage;
+            if(Y <= 0)
+                Y += 2;
+            dy = 2;
         }
-        
     }
 
     public void keyReleased(KeyEvent e) {
         
         char key = e.getKeyChar();
-        
+
         if (key == 'a') {
             dx = 0;
         }

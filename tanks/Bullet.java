@@ -5,9 +5,6 @@
  */
 package tanks;
 
-import java.awt.Color;
-import java.awt.Robot;
-
 /**
  *
  * @author Jared
@@ -15,67 +12,41 @@ import java.awt.Robot;
 public class Bullet {
     protected int x;
     protected int y;
+    protected double hypotenuse;
     protected double cos;
     protected double sin;
     protected boolean visible;
-    protected boolean bounceTime = false;
     protected int bounce;
     
     public Bullet(int x, int y, int mouseX, int mouseY){
         this.x = x;
         this.y = y;
-        double angle = Math.atan2(mouseY - y, mouseX - x);
-        this.cos = Math.cos(angle);
-        this.sin = Math.sin(angle);
+        this.hypotenuse = Math.sqrt((Math.pow((mouseX - x), 2) + Math.pow((mouseY - y), 2)));
+        this.cos = (mouseX - x) /hypotenuse;
+        this.sin = (mouseY - y) /hypotenuse;
         bounce = 0;
         visible = true;
     }
     
-    public void move(){
-        Color color = Color.BLACK;
-        try{
-            Robot rob = new Robot();
-            color = rob.getPixelColor((int) (x + (16*cos)), (int) (y + 30 + (16*sin)));
-        } catch (Exception evt) {
-            System.err.println(evt.getMessage());
-        }
-        if(color.getGreen() == 163)
-            bounceTime = true;
-        moveX();
-        moveY();
-    }
-    
     public void moveX(){
         x += 8*cos;
-        if(bounceTime){
-            Color color = Color.BLACK;
-            try{
-                Robot rob = new Robot();
-                color = rob.getPixelColor((int) (x + (8*cos)), (int) (y + 30 + (8*sin)));
-            } catch (Exception evt) {
-                System.err.println(evt.getMessage());
+        if((x > 1590) || (x < 0)){
+            if(bounce > 0){
+                visible = false;
             }
-            if(color.getGreen() == 163){
-                if(bounce > 0){
-                    visible = false;
-                }
-                cos = -1 * cos;
-                bounce++;
-                bounceTime = false;
-            }
+            cos = -1 * cos;
+            bounce++;
         }
-        
     }
     
     public void moveY(){
         y += 8*sin;
-        if(bounceTime){
+        if((y > 850) || (y < 0)){
             if(bounce > 0){
                 visible = false;
             }
             sin = -1 * sin;
             bounce++;
-            bounceTime = false;
         }
     }
     

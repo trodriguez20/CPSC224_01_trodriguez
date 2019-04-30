@@ -30,6 +30,9 @@ public class GameBoard extends JPanel implements ActionListener {
     
     private Timer timer;
     private Player player1;
+    private AITanks grey;
+    private AITanks blue;
+    private AITanks red;
     final int DELAY = 10;
     /**
      * @param args the command line arguments
@@ -43,6 +46,9 @@ public class GameBoard extends JPanel implements ActionListener {
         setFocusable(true);
         
         player1 = new Player();
+        grey = new AITanks();
+        blue = new AITanks();
+        red = new AITanks();
         
         timer = new Timer(DELAY, this);
         timer.start();
@@ -53,12 +59,12 @@ public class GameBoard extends JPanel implements ActionListener {
     {
         super.paintComponent(g);
         g.setColor(new Color(207, 163, 139));
-        g.fillRect(600, 600, 100, 200);
+        //g.drawRect(0, 0, 1600, 850);
         g.fillRect(0, 0, 1600, 50);
         g.fillRect(0, 0, 50, 850);
-        g.fillRect(0, 815, 1600, 50);
+        g.fillRect(0, 800, 1600, 50);
         g.fillRect(1545, 0, 50, 850);
-        g.setColor(Color.BLACK);
+        g.fillRect(350, 50, 50, 300);
         draw(g);
         
         Toolkit.getDefaultToolkit().sync();
@@ -70,12 +76,27 @@ public class GameBoard extends JPanel implements ActionListener {
         Graphics2D g2d = (Graphics2D) g;
 
         AffineTransform at = AffineTransform.getTranslateInstance(player1.X+10, player1.Y+10);
-        at.rotate((player1.angle + Math.PI/2), player1.widthT/2, player1.heightT/2);
+        at.rotate(player1.angle - 90, player1.widthT/2, player1.heightT/2);
         g2d.drawImage(player1.tankD, player1.X, player1.Y, this);
         g2d.drawImage(player1.tankT, at, this);
         
-        List<Bullet> playerShots = player1.bullets;
+        AffineTransform atg = AffineTransform.getTranslateInstance(grey.Xg+10, grey.Yg+10);
+        atg.rotate((Math.atan2(player1.Y + 25 - grey.Yg, player1.X + 25 - grey.Xg)) + 90, grey.widthgt/2, grey.heightgt/2);
+        g2d.drawImage(grey.tankBG, grey.Xg, grey.Yg, this);
+        g2d.drawImage(grey.tankTG, atg, this);
         
+        AffineTransform atb = AffineTransform.getTranslateInstance(blue.Xb+10, blue.Yb+10);
+        atb.rotate((Math.atan2(player1.Y + 25 - blue.Yb, player1.X + 25 - blue.Xb)) + 90, blue.widthgt/2, blue.heightgt/2);
+        g2d.drawImage(blue.tankDB, blue.Xb, blue.Yb, this);
+        g2d.drawImage(blue.tankTB, atb, this);
+        
+        AffineTransform atr = AffineTransform.getTranslateInstance(red.Xr+10, red.Yr+10);
+        atr.rotate((Math.atan2(player1.Y + 25 - red.Yr, player1.X + 25 - red.Xr)) + 90, red.widthgt/2, red.heightgt/2);
+        g2d.drawImage(red.tankDR, red.Xr, red.Yr, this);
+        g2d.drawImage(red.tankTR, atr, this);
+        
+        List<Bullet> playerShots = player1.bullets;
+        g2d.setColor(Color.black);
         for (Bullet shot : playerShots) {
             g2d.fillOval(shot.getX(), shot.getY(), 10, 10);
         }
@@ -85,10 +106,11 @@ public class GameBoard extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e)
     {
         player1.move();
-        
+        grey.moveAI();
+        blue.moveAI();
         moveBullets();
         
-        repaint();
+       repaint();
     }
     
     private void moveBullets(){
@@ -100,7 +122,8 @@ public class GameBoard extends JPanel implements ActionListener {
 
             if (bullet.isVisible()) {
 
-                bullet.move();
+                bullet.moveX();
+                bullet.moveY();
             } else {
                 shots.remove(i);
             }

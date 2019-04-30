@@ -69,13 +69,12 @@ public class titlePanel extends JPanel{
             
             game.setSize(1600, 900);
             game.setResizable(false);
-            game.setVisible(false);
             
             JPanel gameBoard = new GameBoard();
             game.add(gameBoard);
-            
+          
             game.setVisible(true);
-            
+            setVisible(false);
         }
     }
        
