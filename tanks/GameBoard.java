@@ -127,7 +127,7 @@ public class GameBoard extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        player1.move();
+        player1.move(wallX, wallY, wallWidth, wallHeight);
         //.moveAI(player1.X, player1.Y);
         blue.moveAI(player1.X, player1.Y);
         red.moveAI(player1.X, player1.Y);

@@ -62,17 +62,26 @@ public class Player {
         bullets = new ArrayList<>();
     }
     
-    public void move()
+    public void move(int[] wallX, int[] wallY, int[] wallWidth, int[] wallHeight)
     {
-        if((X < 1545) && (X > 0))
-            X += dx;
-        if((Y < 815) && (Y > 0))
-            Y += dy;
+        X += dx;
+        for(int i = 0; i < wallX.length; i++){
+            if((X + width > wallX[i]) && (X < wallX[i] + wallWidth[i]) && (Y + height > wallY[i]) && (Y < wallY[i] + wallHeight[i])){
+                X -= dx;
+            }
+        }
+        
+        Y += dy;
+        for(int i = 0; i < wallX.length; i++){
+            if((X + width > wallX[i]) && (X < wallX[i] + wallWidth[i]) && (Y + height > wallY[i]) && (Y < wallY[i] + wallHeight[i])){
+                Y -= dy;
+            }
+        }
     }
     
     public void mouseMoved(MouseEvent e){
-        double a = X + 10 - e.getX();
-        double b = Y + 10 - e.getY();
+        double a = -(X + 10 -e.getX());
+        double b = -(Y + 10 - e.getY());
         angle = Math.atan2(b, a);
     }
     
