@@ -22,10 +22,7 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import javax.imageio.*;
 
-/**
- *
- * @author Jared
- */
+
 public class Tanks extends JFrame {
     
     private JButton start;

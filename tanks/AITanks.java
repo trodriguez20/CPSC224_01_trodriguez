@@ -9,8 +9,11 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.imageio.ImageIO;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
@@ -47,6 +50,9 @@ public class AITanks
     int widthr;
     int heightr;
     
+    List<Bullet> bullets;
+    protected Timer aitimer;
+    
     public AITanks()
     {
         ImageIcon tankIconBG = new ImageIcon("greyTankS.png");
@@ -70,13 +76,14 @@ public class AITanks
         }
         widthgt=tankTG.getWidth(null);
         heightgt=tankTG.getHeight(null);
-        
+        aitimer=new Timer();
     }
     
-    public void moveAI()
+    public void moveAI(int xp, int yp)
     {
         moveBlue();
-        moveRed();
+        moveRed(xp, yp);
+        //aiShoot(xp, yp);
     }
     
     public void moveBlue()
@@ -116,13 +123,59 @@ public class AITanks
         if((Yb < 815) && (Yb > 0))
             Yb += dyb;
     }
+    /*
+    public void aiShoot(int x, int y)
+    {
+        if(bullets.size()<2)
+        {
+            bullets.add(new Bullet(Xg+widthgt/2, Yg + heightgt/2, x, y));
+        }
+        /*
+        aitimer.scheduleAtFixedRate(new TimerTask()
+        {
+            int i=0;
+            public void run()
+            {
+                i++;
+                if(i%4==0)
+                {
+                    if(bullets.size()<2)
+                    {
+                        bullets.add(new Bullet(Xg+widthgt/2, Yg + heightgt/2, x, y));
+                    }
+                }
+                
+            }
+        }, 0, 1000);
+        //*/
+    //}
     
-    public void moveRed()
+    
+    public void moveRed(int x, int y)
     {
         int dxr=0;
         int dyr=0;
         
-        
+       if(x>Xr-100 && x<Xr+100 && y>Yr)
+       {
+           dyr+=1;
+           tankDR=tankBR;
+       }
+       if(x>Xr-100 && x<Xr+100 && y<Yr)
+       {
+           dyr-=1;
+           tankDR=tankBR;
+       }
+       if(y>Yr-100 && y<Yr+100 && x>Xr)
+       {
+           dxr+=1;
+           tankDR=tankSR;
+       }
+       if(y>Yr-100 && y<Yr+100 && x<Xr)
+       {
+           dxr-=1;
+           tankDR=tankSR;
+       }
         
         if((Xr < 1545) && (Xr > 0))
             Xr += dxr;

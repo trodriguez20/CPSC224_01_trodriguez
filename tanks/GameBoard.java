@@ -22,14 +22,11 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-/**
- *
- * @author Jared
- */
+
 public class GameBoard extends JPanel implements ActionListener {
     
     private Timer timer;
-    private Player player1;
+    public Player player1;
     private AITanks grey;
     private AITanks blue;
     private AITanks red;
@@ -49,8 +46,8 @@ public class GameBoard extends JPanel implements ActionListener {
         setBackground(new Color(235, 232, 145));
         setFocusable(true);
         
-        //user chooses level on title screen, between 1, 2, and 3
-        switch (level) {
+        switch (level) 
+        {
             case 1:
                 wallX = new int[]{0,0,0,1545,400,1100};
                 wallY = new int[]{0,0,800,0,50,400};
@@ -71,7 +68,6 @@ public class GameBoard extends JPanel implements ActionListener {
                 break;
         }
         
-        
         player1 = new Player();
         grey = new AITanks();
         blue = new AITanks();
@@ -86,7 +82,8 @@ public class GameBoard extends JPanel implements ActionListener {
     {
         super.paintComponent(g);
         g.setColor(new Color(207, 163, 139));
-        for(int i = 0; i < wallX.length; i++){
+        for(int i = 0; i < wallX.length; i++)
+        {
             g.fillRect(wallX[i], wallY[i], wallWidth[i], wallHeight[i]);
         }
         draw(g);
@@ -100,7 +97,7 @@ public class GameBoard extends JPanel implements ActionListener {
         Graphics2D g2d = (Graphics2D) g;
 
         AffineTransform at = AffineTransform.getTranslateInstance(player1.X+10, player1.Y+10);
-        at.rotate((player1.angle + Math.PI/2), player1.widthT/2, player1.heightT/2);
+        at.rotate(player1.angle - 90, player1.widthT/2, player1.heightT/2);
         g2d.drawImage(player1.tankD, player1.X, player1.Y, this);
         g2d.drawImage(player1.tankT, at, this);
         
@@ -124,18 +121,45 @@ public class GameBoard extends JPanel implements ActionListener {
         for (Bullet shot : playerShots) {
             g2d.fillOval(shot.getX(), shot.getY(), 10, 10);
         }
+       
     }
     
     @Override
     public void actionPerformed(ActionEvent e)
     {
         player1.move();
-        grey.moveAI();
-        blue.moveAI();
+        //.moveAI(player1.X, player1.Y);
+        blue.moveAI(player1.X, player1.Y);
+        red.moveAI(player1.X, player1.Y);
         moveBullets();
-        
+        //moveAIBullets();
        repaint();
     }
+    
+    /*
+    private void moveAIBullets()
+    {
+        //grey.aiShoot(player1.X, player1.Y);
+        List<Bullet> aiShots = grey.bullets;
+
+        for (int i = 0; i < aiShots.size(); i++) 
+        {
+
+            Bullet bullet = aiShots.get(i);
+
+            if (bullet.isVisible()) 
+            {
+
+                bullet.moveX();
+                bullet.moveY();
+            } 
+            else 
+            {
+                aiShots.remove(i);
+            }
+        }
+    }
+//*/
     
     private void moveBullets(){
         List<Bullet> shots = player1.bullets;
@@ -145,6 +169,7 @@ public class GameBoard extends JPanel implements ActionListener {
             Bullet bullet = shots.get(i);
 
             if (bullet.isVisible()) {
+
                 bullet.move(wallX, wallY, wallWidth, wallHeight);
             } else {
                 shots.remove(i);
