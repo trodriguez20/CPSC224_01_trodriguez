@@ -71,8 +71,8 @@ public class Player {
     }
     
     public void mouseMoved(MouseEvent e){
-        double a = X + 10 - e.getX();
-        double b = Y + 10 - e.getY();
+        double a = -(X + 10 -e.getX());
+        double b = -(Y + 10 - e.getY());
         angle = Math.atan2(b, a);
     }
     

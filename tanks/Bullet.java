@@ -28,25 +28,27 @@ public class Bullet {
         visible = true;
     }
     
-    public void moveX(){
+    public void move(int[] wallX, int[] wallY, int[] wallWidth, int[] wallHeight){
         x += 8*cos;
-        if((x > 1590) || (x < 0)){
-            if(bounce > 0){
-                visible = false;
+        for(int i = 0; i < wallX.length; i++){
+            if((x > wallX[i]) && (x < wallX[i] + wallWidth[i]) && (y > wallY[i]) && (y < wallY[i] + wallHeight[i])){
+                x -= 8*cos;
+                if(bounce > 0)
+                    visible = false;
+                cos = -1 * cos;
+                bounce++;
             }
-            cos = -1 * cos;
-            bounce++;
         }
-    }
-    
-    public void moveY(){
+        
         y += 8*sin;
-        if((y > 850) || (y < 0)){
-            if(bounce > 0){
-                visible = false;
+        for(int i = 0; i < wallX.length; i++){
+            if((x > wallX[i]) && (x < wallX[i] + wallWidth[i]) && (y > wallY[i]) && (y < wallY[i] + wallHeight[i])){
+                y -= 8*sin;
+                if(bounce > 0)
+                    visible = false;
+                sin = -1 * sin;
+                bounce++;
             }
-            sin = -1 * sin;
-            bounce++;
         }
     }
     

@@ -34,16 +34,43 @@ public class GameBoard extends JPanel implements ActionListener {
     private AITanks blue;
     private AITanks red;
     final int DELAY = 10;
+    private int[] wallX;
+    private int[] wallY;
+    private int[] wallWidth;
+    private int[] wallHeight;
     /**
      * @param args the command line arguments
      */
-    public GameBoard ()
+    public GameBoard (int level)
     {
         addKeyListener(new TAdapter());
         addMouseListener(new MyMouseListener());
         addMouseMotionListener(new myMouseMotionListener());
         setBackground(new Color(235, 232, 145));
         setFocusable(true);
+        
+        //user chooses level on title screen, between 1, 2, and 3
+        switch (level) {
+            case 1:
+                wallX = new int[]{0,0,0,1545,400,1100};
+                wallY = new int[]{0,0,800,0,50,400};
+                wallWidth = new int[]{1600,50,1600,50,50,50};
+                wallHeight = new int[]{50,850,100,850,500,600};
+                break;
+            case 2:
+                wallX = new int[9];
+                wallY = new int[9];
+                wallWidth = new int[9];
+                wallHeight = new int[9];
+                break;
+            default:
+                wallX = new int[8];
+                wallY = new int[8];
+                wallWidth = new int[8];
+                wallHeight = new int[8];
+                break;
+        }
+        
         
         player1 = new Player();
         grey = new AITanks();
@@ -59,12 +86,9 @@ public class GameBoard extends JPanel implements ActionListener {
     {
         super.paintComponent(g);
         g.setColor(new Color(207, 163, 139));
-        //g.drawRect(0, 0, 1600, 850);
-        g.fillRect(0, 0, 1600, 50);
-        g.fillRect(0, 0, 50, 850);
-        g.fillRect(0, 800, 1600, 50);
-        g.fillRect(1545, 0, 50, 850);
-        g.fillRect(350, 50, 50, 300);
+        for(int i = 0; i < wallX.length; i++){
+            g.fillRect(wallX[i], wallY[i], wallWidth[i], wallHeight[i]);
+        }
         draw(g);
         
         Toolkit.getDefaultToolkit().sync();
@@ -76,7 +100,7 @@ public class GameBoard extends JPanel implements ActionListener {
         Graphics2D g2d = (Graphics2D) g;
 
         AffineTransform at = AffineTransform.getTranslateInstance(player1.X+10, player1.Y+10);
-        at.rotate(player1.angle - 90, player1.widthT/2, player1.heightT/2);
+        at.rotate((player1.angle + Math.PI/2), player1.widthT/2, player1.heightT/2);
         g2d.drawImage(player1.tankD, player1.X, player1.Y, this);
         g2d.drawImage(player1.tankT, at, this);
         
@@ -121,9 +145,7 @@ public class GameBoard extends JPanel implements ActionListener {
             Bullet bullet = shots.get(i);
 
             if (bullet.isVisible()) {
-
-                bullet.moveX();
-                bullet.moveY();
+                bullet.move(wallX, wallY, wallWidth, wallHeight);
             } else {
                 shots.remove(i);
             }

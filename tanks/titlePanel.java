@@ -25,8 +25,8 @@ public class titlePanel extends JPanel{
     private Image title;
     private Image tank;
     private Image mascot;
-    private JButton start;
-    private JButton Exit;
+    //private JButton start;
+    //private JButton Exit;
        
     public titlePanel()
     {
@@ -42,14 +42,6 @@ public class titlePanel extends JPanel{
             System.out.println("Error opening image files");
         }
         setLayout(new FlowLayout());
-        start=new JButton("START");
-        Exit=new JButton("EXIT");
-        start.setFont(new Font("Dialog", 1, 60));
-        Exit.setFont(new Font("Dialog", 1, 60));
-        add(start);
-        add(Exit);
-        start.addActionListener(new gameListener());
-        Exit.addActionListener(new exitListener());
         repaint();
     }
        
@@ -58,31 +50,5 @@ public class titlePanel extends JPanel{
         g.drawImage(tank, 150, -100, null);
         g.drawImage(mascot, 0, -50, null);
         g.drawImage(title, 425, 100, null);
-    }
-       
-    private class gameListener extends JButton implements ActionListener
-    {
-        public void actionPerformed(ActionEvent e)
-        {
-            JFrame game = new JFrame();
-            game.setTitle("Tanks");
-            
-            game.setSize(1600, 900);
-            game.setResizable(false);
-            
-            JPanel gameBoard = new GameBoard();
-            game.add(gameBoard);
-          
-            game.setVisible(true);
-            setVisible(false);
-        }
-    }
-       
-    private class exitListener extends JButton implements ActionListener
-    {
-        public void actionPerformed(ActionEvent e)
-        {
-            System.exit(0);
-        }
     }
 }
