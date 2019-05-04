@@ -21,13 +21,17 @@ import java.awt.geom.AffineTransform;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.JOptionPane;
 
 
 public class GameBoard extends JPanel implements ActionListener {
     
     private Timer timer;
     public Player player1;
-    private AITanks grey;
+    public AITanks grey;
     private AITanks blue;
     private AITanks red;
     final int DELAY = 10;
@@ -45,7 +49,7 @@ public class GameBoard extends JPanel implements ActionListener {
         addMouseMotionListener(new myMouseMotionListener());
         setBackground(new Color(235, 232, 145));
         setFocusable(true);
-        
+
         switch (level) 
         {
             case 1:
@@ -75,6 +79,7 @@ public class GameBoard extends JPanel implements ActionListener {
         
         timer = new Timer(DELAY, this);
         timer.start();
+       
     }
     
     @Override
@@ -96,25 +101,35 @@ public class GameBoard extends JPanel implements ActionListener {
         
         Graphics2D g2d = (Graphics2D) g;
 
-        AffineTransform at = AffineTransform.getTranslateInstance(player1.X+10, player1.Y+10);
-        at.rotate(player1.angle - 90, player1.widthT/2, player1.heightT/2);
-        g2d.drawImage(player1.tankD, player1.X, player1.Y, this);
-        g2d.drawImage(player1.tankT, at, this);
+        //if(player1.Alive)
+        //{
+            AffineTransform at = AffineTransform.getTranslateInstance(player1.X+10, player1.Y+10);
+            at.rotate(player1.angle + 90, player1.widthT/2, player1.heightT/2);
+            g2d.drawImage(player1.tankD, player1.X, player1.Y, this);
+            g2d.drawImage(player1.tankT, at, this);
+        //}
         
-        AffineTransform atg = AffineTransform.getTranslateInstance(grey.Xg+10, grey.Yg+10);
-        atg.rotate((Math.atan2(player1.Y + 25 - grey.Yg, player1.X + 25 - grey.Xg)) + 90, grey.widthgt/2, grey.heightgt/2);
-        g2d.drawImage(grey.tankBG, grey.Xg, grey.Yg, this);
-        g2d.drawImage(grey.tankTG, atg, this);
-        
-        AffineTransform atb = AffineTransform.getTranslateInstance(blue.Xb+10, blue.Yb+10);
-        atb.rotate((Math.atan2(player1.Y + 25 - blue.Yb, player1.X + 25 - blue.Xb)) + 90, blue.widthgt/2, blue.heightgt/2);
-        g2d.drawImage(blue.tankDB, blue.Xb, blue.Yb, this);
-        g2d.drawImage(blue.tankTB, atb, this);
-        
-        AffineTransform atr = AffineTransform.getTranslateInstance(red.Xr+10, red.Yr+10);
-        atr.rotate((Math.atan2(player1.Y + 25 - red.Yr, player1.X + 25 - red.Xr)) + 90, red.widthgt/2, red.heightgt/2);
-        g2d.drawImage(red.tankDR, red.Xr, red.Yr, this);
-        g2d.drawImage(red.tankTR, atr, this);
+        if(grey.Alive)
+        {
+            AffineTransform atg = AffineTransform.getTranslateInstance(grey.Xg+10, grey.Yg+10);
+            atg.rotate((Math.atan2(player1.Y + 25 - grey.Yg, player1.X + 25 - grey.Xg)) + 90, grey.widthgt/2, grey.heightgt/2);
+            g2d.drawImage(grey.tankBG, grey.Xg, grey.Yg, this);
+            g2d.drawImage(grey.tankTG, atg, this);
+        }
+        if(blue.Alive)
+        {
+            AffineTransform atb = AffineTransform.getTranslateInstance(blue.Xb+10, blue.Yb+10);
+            atb.rotate((Math.atan2(player1.Y + 25 - blue.Yb, player1.X + 25 - blue.Xb)) + 90, blue.widthgt/2, blue.heightgt/2);
+            g2d.drawImage(blue.tankDB, blue.Xb, blue.Yb, this);
+            g2d.drawImage(blue.tankTB, atb, this);
+        }
+        if(red.Alive)
+        {
+            AffineTransform atr = AffineTransform.getTranslateInstance(red.Xr+10, red.Yr+10);
+            atr.rotate((Math.atan2(player1.Y + 25 - red.Yr, player1.X + 25 - red.Xr)) + 90, red.widthgt/2, red.heightgt/2);
+            g2d.drawImage(red.tankDR, red.Xr, red.Yr, this);
+            g2d.drawImage(red.tankTR, atr, this);
+        }
         
         List<Bullet> playerShots = player1.bullets;
         g2d.setColor(Color.black);
@@ -127,12 +142,10 @@ public class GameBoard extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        player1.move(wallX, wallY, wallWidth, wallHeight);
-        //.moveAI(player1.X, player1.Y);
-        blue.moveAI(player1.X, player1.Y);
-        red.moveAI(player1.X, player1.Y);
-        moveBullets();
-        //moveAIBullets();
+       player1.move(wallX, wallY, wallWidth, wallHeight);
+       blue.moveAI(player1.X, player1.Y);
+       red.moveAI(player1.X, player1.Y);
+       moveBullets();
        repaint();
     }
     
@@ -161,17 +174,42 @@ public class GameBoard extends JPanel implements ActionListener {
     }
 //*/
     
-    private void moveBullets(){
+    private void moveBullets()
+    {
         List<Bullet> shots = player1.bullets;
 
-        for (int i = 0; i < shots.size(); i++) {
+        for (int i = 0; i < shots.size(); i++) 
+        {
 
             Bullet bullet = shots.get(i);
-
-            if (bullet.isVisible()) {
-
+            
+            if(!bullet.hit(grey.Xg, grey.Yg))
+            {
+                grey.Alive=false;
+                grey.Xg=0;
+                grey.Yg=0;
+            }
+            if(!bullet.hit(red.Xr, red.Yr))
+            {
+                red.Alive=false;
+                red.Xr=0;
+                red.Yr=0;
+            }
+            if(!bullet.hit(blue.Xb, blue.Yb))
+            {
+                blue.Alive=false;
+                blue.Xb=0;
+                blue.Yb=0;
+            }
+           
+            
+            if (bullet.isVisible()) 
+            {
                 bullet.move(wallX, wallY, wallWidth, wallHeight);
-            } else {
+            } 
+            else 
+            {
+                //grey.Alive=bullet.hit(grey.Xg, grey.Yg);
                 shots.remove(i);
             }
         }
@@ -211,4 +249,21 @@ public class GameBoard extends JPanel implements ActionListener {
             player1.keyPressed(e);
         }
     }
+    /*
+    private void levelOver()
+    {
+        if(!grey.Alive && !red.Alive && !blue.Alive)
+        {
+            int choice=JOptionPane.showConfirmDialog(null,"CONTINUE?", "LEVEL CLEAR!", JOptionPane.YES_NO_OPTION);
+            if(choice==JOptionPane.YES_OPTION)
+            {
+                GameBoard(2);
+            }
+            else
+            {
+
+            }
+        }
+    }
+//*/
 }

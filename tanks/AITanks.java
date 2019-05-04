@@ -53,6 +53,8 @@ public class AITanks
     List<Bullet> bullets;
     protected Timer aitimer;
     
+    boolean Alive=true;
+    
     public AITanks()
     {
         ImageIcon tankIconBG = new ImageIcon("greyTankS.png");
