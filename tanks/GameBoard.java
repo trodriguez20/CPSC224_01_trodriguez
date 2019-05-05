@@ -23,9 +23,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-//import java.awt.event.WindowEvent;
-import javafx.stage.WindowEvent;
-//import com.sun.glass.events.WindowEvent;
 
 
 public class GameBoard extends JPanel implements ActionListener {
@@ -33,7 +30,6 @@ public class GameBoard extends JPanel implements ActionListener {
     private Timer timer;
     public Player player1;
     int Score;
-
     private AITanks[] compTanks;
     final int DELAY = 10;
     private int[] wallX;
@@ -41,7 +37,9 @@ public class GameBoard extends JPanel implements ActionListener {
     private int[] wallWidth;
     private int[] wallHeight;
     int lvl;
-   
+    /**
+     * @param args the command line arguments
+     */
     public GameBoard (int level, int score)
     {
         addKeyListener(new TAdapter());
@@ -58,9 +56,9 @@ public class GameBoard extends JPanel implements ActionListener {
                 wallWidth = new int[]{1600,50,1600,50,50,50};
                 wallHeight = new int[]{50,850,100,850,500,600};
                 compTanks = new AITanks[3];
-                compTanks[0] = new AITanks(1400, 100, 'g');
-                compTanks[1] = new AITanks(1400, 600, 'b');
-                compTanks[2] = new AITanks(1400, 300, 'r');
+                compTanks[0] = new AITanks(1400, 100, 'g', wallX, wallY, wallWidth, wallHeight);
+                compTanks[1] = new AITanks(1400, 600, 'b', wallX, wallY, wallWidth, wallHeight);
+                compTanks[2] = new AITanks(1400, 300, 'r', wallX, wallY, wallWidth, wallHeight);
                 break;
             case 1:
                 wallX = new int[]{0,0,0,1545,400};
@@ -68,24 +66,27 @@ public class GameBoard extends JPanel implements ActionListener {
                 wallWidth = new int[]{1600,50,1600,50,50};
                 wallHeight = new int[]{50,850,100,850,500};
                 compTanks = new AITanks[3];
-                compTanks[0] = new AITanks(1400, 100, 'g');
-                compTanks[1] = new AITanks(1400, 600, 'b');
-                compTanks[2] = new AITanks(1400, 300, 'r');
+                compTanks[0] = new AITanks(1400, 100, 'g', wallX, wallY, wallWidth, wallHeight);
+                compTanks[1] = new AITanks(1400, 600, 'b', wallX, wallY, wallWidth, wallHeight);
+                compTanks[2] = new AITanks(1400, 300, 'r', wallX, wallY, wallWidth, wallHeight);
                 break;
             default:
                 wallX = new int[]{0,0,0,1545};
                 wallY = new int[]{0,0,800,0};
                 wallWidth = new int[]{1600,50,1600,50};
                 wallHeight = new int[]{50,850,100,850};
-                compTanks = new AITanks[3];
-                compTanks[0] = new AITanks(1400, 100, 'g');
-                compTanks[1] = new AITanks(1400, 600, 'b');
-                compTanks[2] = new AITanks(1400, 300, 'r');
+                compTanks = new AITanks[6];
+                compTanks[0] = new AITanks(700, 100, 'g', wallX, wallY, wallWidth, wallHeight);
+                compTanks[1] = new AITanks(700, 600, 'r', wallX, wallY, wallWidth, wallHeight);
+                compTanks[2] = new AITanks(700, 300, 'r', wallX, wallY, wallWidth, wallHeight);
+                compTanks[3] = new AITanks(1400, 100, 'g', wallX, wallY, wallWidth, wallHeight);
+                compTanks[4] = new AITanks(1400, 600, 'b', wallX, wallY, wallWidth, wallHeight);
+                compTanks[5] = new AITanks(1400, 300, 'r', wallX, wallY, wallWidth, wallHeight);
                 break;
         }
         
         player1 = new Player();
- 
+        
         timer = new Timer(DELAY, this);
         timer.start();
         lvl = level;
@@ -124,7 +125,7 @@ public class GameBoard extends JPanel implements ActionListener {
                 g2d.drawImage(compTank.tankT, atg, this);
             }
         }
-                
+        
         for(AITanks compTank : compTanks){
             List<Bullet> aiShots = compTank.bullets;
             g2d.setColor(Color.black);
@@ -149,7 +150,6 @@ public class GameBoard extends JPanel implements ActionListener {
             compTank.moveAI(player1.X, player1.Y);
             //compTank.aiShoot();
         }
- 
        
         moveBullets(player1.bullets);
         for(AITanks compTank : compTanks){
@@ -159,9 +159,7 @@ public class GameBoard extends JPanel implements ActionListener {
        levelOver();
     }
     
-
     private void moveBullets(List<Bullet> shots){
-        //List<Bullet> shots = player1.bullets;
 
         for (int i = 0; i < shots.size(); i++) {
 
@@ -170,7 +168,7 @@ public class GameBoard extends JPanel implements ActionListener {
             for(AITanks compTank : compTanks){
                 if(!bullet.hit(compTank.X, compTank.Y)){
                     compTank.alive = false;
-                    Score +=1;
+                    Score += 1;
                     compTank.X = 0;
                     compTank.Y = 0;
                 }

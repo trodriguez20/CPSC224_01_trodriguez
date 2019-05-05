@@ -87,7 +87,7 @@ public class Player {
     
     public void mousePressed(MouseEvent e){
         if(bullets.size() < 5){
-           bullets.add(new Bullet(X + width/2, Y + height / 2, e.getX(), e.getY(), 0)); 
+           bullets.add(new Bullet(X + width/2, Y + height / 2, e.getX(), e.getY(), 0, 8)); 
         }
     }
     

@@ -21,7 +21,7 @@ import javax.swing.Timer;
  *
  * @author m14wo
  */
-public class AITanks// implements ActionListener
+public class AITanks implements ActionListener
 {
     Image tankB;
     Image tankS;
@@ -36,43 +36,22 @@ public class AITanks// implements ActionListener
     int height;
     int heightT;
     char type;
+    int[] wallX;
+    int[] wallY;
+    int[] wallWidth;
+    int[] wallHeight;
     
     boolean alive = true;
-    /*
-    Image tankBG;
-    BufferedImage tankTG;
-    int Xg=1400;
-    int Yg=100;
-    int widthgt;
-    int heightgt;
     
-    double angle = 0;
-    double a;
-    double b;
-    
-    Image tankBB;
-    Image tankDB;
-    Image tankSB;
-    BufferedImage tankTB;
-    int Xb=1400;
-    int Yb=600;
-    int widthb;
-    int heightb;
-    
-    Image tankBR;
-    Image tankDR;
-    Image tankSR;
-    BufferedImage tankTR;
-    int Xr=1400;
-    int Yr=300;
-    int widthr;
-    int heightr;
-    */
     List<Bullet> bullets;
     protected Timer aitimer;
     
-    public AITanks(int X, int Y, char type)
+    public AITanks(int X, int Y, char type, int[] wallX, int[] wallY, int[] wallW, int[] wallH)
     {
+        this.wallX = wallX;
+        this.wallY = wallY;
+        this.wallWidth = wallW;
+        this.wallHeight = wallH;
         this.X = X;
         this.Y = Y;
         this.type = type;
@@ -112,33 +91,9 @@ public class AITanks// implements ActionListener
         heightT = tankT.getHeight(null);
         
         bullets = new ArrayList<>();
-        /*
-        ImageIcon tankIconBG = new ImageIcon("greyTankS.png");
-        ImageIcon tankIconBB = new ImageIcon("blueTankB.png");
-        ImageIcon tankIconSB = new ImageIcon("blueTankS.png");
-        ImageIcon tankIconBR = new ImageIcon("redTankB.png");
-        ImageIcon tankIconSR = new ImageIcon("redTankS.png");
         
-        tankBG = tankIconBG.getImage();
-        tankBB = tankIconBB.getImage();
-        tankSB = tankIconSB.getImage();
-        tankBR = tankIconBR.getImage();
-        tankSR = tankIconSR.getImage();
-        tankDB = tankBB;
-        tankDR = tankBR;
-        
-        try{
-            tankTG = ImageIO.read(new File("greyT.png"));
-            tankTB = ImageIO.read(new File("blueT.png"));
-            tankTR = ImageIO.read(new File("redT.png"));
-        } catch(IOException e) {
-        
-        }
-        widthgt=tankTG.getWidth(null);
-        heightgt=tankTG.getHeight(null);
-        */
-        //aitimer=new Timer(3000, this);
-        //aitimer.start();
+        aitimer=new Timer((int) (Math.random()*1000 + 1000), this);
+        aitimer.start();
     }
     
     public void moveAI(int xp, int yp)
@@ -150,8 +105,8 @@ public class AITanks// implements ActionListener
         } else if(type == 'r'){
             moveRed(xp, yp);
         }
-        if(alive)
-            aiShoot();
+        //if(alive)
+            //aiShoot();
     }
     
     public void moveBlue()
@@ -194,25 +149,17 @@ public class AITanks// implements ActionListener
     
     public void aiShoot()
     {
-        int side = 0;
-        int vertical = 0;
         if(bullets.size()<1)
         {
-            if(X < xPlayer){
-                side = 25;
-            } else {
-                side = -25;
+            Bullet test = new Bullet(X+width/2, Y + height/2, xPlayer, yPlayer, 1, 50);
+            while(test.isVisible() && (Math.abs(test.getX() - xPlayer) > 100 || Math.abs(test.getY() - yPlayer) > 100)){
+                test.move(wallX, wallY, wallWidth, wallHeight);
+                System.out.println(Math.abs(test.getX() - xPlayer));
             }
-            if(Y < yPlayer){
-                vertical = 25;
-            } else {
-                vertical = -25;
-            }
-            bullets.add(new Bullet(X+width/2 + side, Y + height/2 + vertical, xPlayer, yPlayer, 1));
+            if(test.isVisible())
+                bullets.add(new Bullet(X+width/2, Y + height/2, xPlayer, yPlayer, 1, 8));
         }
-        
     }
-    
     
     public void moveRed(int x, int y)
     {
@@ -240,15 +187,28 @@ public class AITanks// implements ActionListener
            tankB=tankS;
        }
         
-        if((X < 1545) && (X > 0))
-            X += dxr;
-        if((Y < 815) && (Y > 0))
-            Y += dyr;
+       X += dxr;
+        for(int i = 0; i < wallX.length; i++){
+            if((X + width > wallX[i]) && (X < wallX[i] + wallWidth[i]) && (Y + height > wallY[i]) && (Y < wallY[i] + wallHeight[i])){
+                X -= dxr;
+            }
+        }
+        
+        Y += dyr;
+        for(int i = 0; i < wallX.length; i++){
+            if((X + width > wallX[i]) && (X < wallX[i] + wallWidth[i]) && (Y + height > wallY[i]) && (Y < wallY[i] + wallHeight[i])){
+                Y -= dyr;
+            }
+        }
+//        if((X < 1545) && (X > 0))
+//            X += dxr;
+//        if((Y < 815) && (Y > 0))
+//            Y += dyr;
     }
-/*
+    
     @Override
     public void actionPerformed(ActionEvent ae) {
-        this.aiShoot();
+        if(this.alive)
+            this.aiShoot();
     }
-    */
 }
