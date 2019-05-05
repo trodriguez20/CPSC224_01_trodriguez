@@ -61,9 +61,9 @@ public class Bullet {
         if(x>tankX && x<tankX+50 && y>tankY && y<tankY+50)
         {
             visible=false;
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
     
     public int getX() {

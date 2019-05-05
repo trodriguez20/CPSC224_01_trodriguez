@@ -154,7 +154,6 @@ public class AITanks implements ActionListener
             Bullet test = new Bullet(X+width/2, Y + height/2, xPlayer, yPlayer, 1, 50);
             while(test.isVisible() && (Math.abs(test.getX() - xPlayer) > 100 || Math.abs(test.getY() - yPlayer) > 100)){
                 test.move(wallX, wallY, wallWidth, wallHeight);
-                System.out.println(Math.abs(test.getX() - xPlayer));
             }
             if(test.isVisible())
                 bullets.add(new Bullet(X+width/2, Y + height/2, xPlayer, yPlayer, 1, 8));
@@ -166,33 +165,31 @@ public class AITanks implements ActionListener
         int dxr=0;
         int dyr=0;
         
-       if(x>X-100 && x<X+100 && y>Y)
-       {
-           dyr+=1;
-           tankB=tankImage;
-       }
-       if(x>X-100 && x<X+100 && y<Y)
-       {
-           dyr-=1;
-           tankB=tankImage;
-       }
-       if(y>Y-100 && y<Y+100 && x>X)
-       {
-           dxr+=1;
-           tankB=tankS;
-       }
-       if(y>Y-100 && y<Y+100 && x<X)
-       {
-           dxr-=1;
-           tankB=tankS;
-       }
         
-       X += dxr;
-        for(int i = 0; i < wallX.length; i++){
-            if((X + width > wallX[i]) && (X < wallX[i] + wallWidth[i]) && (Y + height > wallY[i]) && (Y < wallY[i] + wallHeight[i])){
-                X -= dxr;
-            }
+        if(x>X-200 && x<X+200)
+        {
+            if(y > Y)
+                dyr+=1;
+            else
+                dyr-=1;
+            tankB=tankImage;
         }
+        
+        if(y>Y-200 && y<Y+200)
+        {
+            if(x > X)
+                dxr+=1;
+            else
+                dxr-=1;
+            tankB=tankS;
+        }
+
+        X += dxr;
+         for(int i = 0; i < wallX.length; i++){
+             if((X + width > wallX[i]) && (X < wallX[i] + wallWidth[i]) && (Y + height > wallY[i]) && (Y < wallY[i] + wallHeight[i])){
+                 X -= dxr;
+             }
+         }
         
         Y += dyr;
         for(int i = 0; i < wallX.length; i++){
@@ -200,10 +197,6 @@ public class AITanks implements ActionListener
                 Y -= dyr;
             }
         }
-//        if((X < 1545) && (X > 0))
-//            X += dxr;
-//        if((Y < 815) && (Y > 0))
-//            Y += dyr;
     }
     
     @Override

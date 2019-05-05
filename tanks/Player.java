@@ -30,6 +30,7 @@ public class Player {
     int height;
     int widthT;
     int heightT;
+    boolean alive = true;
     List<Bullet> bullets;
     Image tankImage;
     Image tankD;

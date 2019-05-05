@@ -166,12 +166,18 @@ public class GameBoard extends JPanel implements ActionListener {
             Bullet bullet = shots.get(i);
             
             for(AITanks compTank : compTanks){
-                if(!bullet.hit(compTank.X, compTank.Y)){
+                if(bullet.hit(compTank.X, compTank.Y)){
                     compTank.alive = false;
                     Score += 1;
                     compTank.X = 0;
                     compTank.Y = 0;
                 }
+            }
+            
+            if(bullet.hit(player1.X, player1.Y)){
+                player1.alive = false;
+                player1.X = 0;
+                player1.Y = 0;
             }
             
             if (bullet.isVisible()) {
