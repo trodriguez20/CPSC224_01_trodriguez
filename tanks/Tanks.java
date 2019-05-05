@@ -22,7 +22,10 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import javax.imageio.*;
 
-
+/**
+ *
+ * @author Jared
+ */
 public class Tanks extends JFrame {
     
     private JButton start;
@@ -31,7 +34,7 @@ public class Tanks extends JFrame {
     public Tanks()
     {
         JPanel title = new titlePanel();
-        
+        //GameBoard game = new GameBoard();
         add(title);
         start=new JButton("START");
         exit=new JButton("EXIT");
@@ -63,8 +66,9 @@ public class Tanks extends JFrame {
             game.setResizable(false);
             game.setVisible(false);
             game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            JPanel gameBoard1 = new GameBoard(1);
-            game.add(gameBoard1);
+            JPanel gameBoard = new GameBoard(1);
+            game.add(gameBoard);
+            
             game.setVisible(true);
             dispose();
         }

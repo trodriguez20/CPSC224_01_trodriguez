@@ -17,9 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
 
-
-public class Player 
-{
+/**
+ *
+ * @author Jared
+ */
+public class Player {
     
     private int dx, dy;
     int X = 100;
@@ -37,19 +39,15 @@ public class Player
     Point turretPos = new Point(X, Y);
     double angle = 0;
     
-    boolean Alive = true;
-    
     public Player()
     {
         ImageIcon tankIcon = new ImageIcon("tankBottom.png");
+        //ImageIcon tankTurret = new ImageIcon("tankTop.png");
         ImageIcon tankIconS = new ImageIcon("tankBottomS.png");
         tankImage = tankIcon.getImage();
-        try
-        {
+        try{
             tankT = ImageIO.read(new File("tankTop.png"));
-        }
-        catch(IOException e) 
-        {
+        } catch(IOException e) {
         
         }
         
@@ -67,70 +65,58 @@ public class Player
     public void move(int[] wallX, int[] wallY, int[] wallWidth, int[] wallHeight)
     {
         X += dx;
-        for(int i = 0; i < wallX.length; i++)
-        {
-            if((X + width > wallX[i]) && (X < wallX[i] + wallWidth[i]) && (Y + height > wallY[i]) && (Y < wallY[i] + wallHeight[i]))
-            {
+        for(int i = 0; i < wallX.length; i++){
+            if((X + width > wallX[i]) && (X < wallX[i] + wallWidth[i]) && (Y + height > wallY[i]) && (Y < wallY[i] + wallHeight[i])){
                 X -= dx;
             }
         }
         
         Y += dy;
-        for(int i = 0; i < wallX.length; i++)
-        {
-            if((X + width > wallX[i]) && (X < wallX[i] + wallWidth[i]) && (Y + height > wallY[i]) && (Y < wallY[i] + wallHeight[i]))
-            {
+        for(int i = 0; i < wallX.length; i++){
+            if((X + width > wallX[i]) && (X < wallX[i] + wallWidth[i]) && (Y + height > wallY[i]) && (Y < wallY[i] + wallHeight[i])){
                 Y -= dy;
             }
         }
     }
     
-    public void mouseMoved(MouseEvent e)
-    {
-        double a = -(X + 10 -e.getX());
+    public void mouseMoved(MouseEvent e){
+        double a = -(X  + 10 - e.getX());
         double b = -(Y + 10 - e.getY());
         angle = Math.atan2(b, a);
     }
     
-    public void mousePressed(MouseEvent e)
-    {
-        if(bullets.size() < 5)
-        {
-           bullets.add(new Bullet(X + width/2, Y + height / 2, e.getX(), e.getY())); 
+    public void mousePressed(MouseEvent e){
+        if(bullets.size() < 5){
+           bullets.add(new Bullet(X + width/2, Y + height / 2, e.getX(), e.getY(), 0)); 
         }
     }
     
-    public void keyPressed(KeyEvent e) 
-    {
+    public void keyPressed(KeyEvent e) {
 
         char key = e.getKeyChar();
 
-        if (key == 'a') 
-        {
+        if (key == 'a') {
             tankD=tankS;
             if(X >= 1545)
                 X -= 2;
             dx = -2;
         }
 
-        if (key == 'd') 
-        {
+        if (key == 'd') {
             tankD=tankS;
             if(X <= 0)
                 X += 2;
             dx = 2;
         }
 
-        if (key == 'w') 
-        {
+        if (key == 'w') {
             tankD=tankImage;
             if(Y >= 815)
                 Y -= 2;
             dy = -2;
         }
 
-        if (key == 's') 
-        {
+        if (key == 's') {
             tankD=tankImage;
             if(Y <= 0)
                 Y += 2;
@@ -138,28 +124,23 @@ public class Player
         }
     }
 
-    public void keyReleased(KeyEvent e) 
-    {
+    public void keyReleased(KeyEvent e) {
         
         char key = e.getKeyChar();
 
-        if (key == 'a') 
-        {
+        if (key == 'a') {
             dx = 0;
         }
 
-        if (key == 'd') 
-        {
+        if (key == 'd') {
             dx = 0;
         }
 
-        if (key == 'w') 
-        {
+        if (key == 'w') {
             dy = 0;
         }
 
-        if (key == 's') 
-        {
+        if (key == 's') {
             dy = 0;
         }
     }
