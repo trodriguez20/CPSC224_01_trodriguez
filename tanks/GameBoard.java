@@ -23,17 +23,17 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+//import java.awt.event.WindowEvent;
+import javafx.stage.WindowEvent;
+//import com.sun.glass.events.WindowEvent;
 
 
 public class GameBoard extends JPanel implements ActionListener {
     
     private Timer timer;
     public Player player1;
-    /*
-    private AITanks grey;
-    private AITanks blue;
-    private AITanks red;
-    */
+    int Score;
+
     private AITanks[] compTanks;
     final int DELAY = 10;
     private int[] wallX;
@@ -41,10 +41,8 @@ public class GameBoard extends JPanel implements ActionListener {
     private int[] wallWidth;
     private int[] wallHeight;
     int lvl;
-    /**
-     * @param args the command line arguments
-     */
-    public GameBoard (int level)
+   
+    public GameBoard (int level, int score)
     {
         addKeyListener(new TAdapter());
         addMouseListener(new MyMouseListener());
@@ -54,7 +52,7 @@ public class GameBoard extends JPanel implements ActionListener {
         
         switch (level) 
         {
-            case 1:
+            case 0:
                 wallX = new int[]{0,0,0,1545,400,1100};
                 wallY = new int[]{0,0,800,0,50,400};
                 wallWidth = new int[]{1600,50,1600,50,50,50};
@@ -64,7 +62,7 @@ public class GameBoard extends JPanel implements ActionListener {
                 compTanks[1] = new AITanks(1400, 600, 'b');
                 compTanks[2] = new AITanks(1400, 300, 'r');
                 break;
-            case 2:
+            case 1:
                 wallX = new int[]{0,0,0,1545,400};
                 wallY = new int[]{0,0,800,0,50};
                 wallWidth = new int[]{1600,50,1600,50,50};
@@ -75,22 +73,23 @@ public class GameBoard extends JPanel implements ActionListener {
                 compTanks[2] = new AITanks(1400, 300, 'r');
                 break;
             default:
-                wallX = new int[8];
-                wallY = new int[8];
-                wallWidth = new int[8];
-                wallHeight = new int[8];
+                wallX = new int[]{0,0,0,1545};
+                wallY = new int[]{0,0,800,0};
+                wallWidth = new int[]{1600,50,1600,50};
+                wallHeight = new int[]{50,850,100,850};
+                compTanks = new AITanks[3];
+                compTanks[0] = new AITanks(1400, 100, 'g');
+                compTanks[1] = new AITanks(1400, 600, 'b');
+                compTanks[2] = new AITanks(1400, 300, 'r');
                 break;
         }
         
         player1 = new Player();
-        /*
-        grey = new AITanks(1400, 100, 'g');
-        blue = new AITanks(1400, 600, 'b');
-        red = new AITanks(1400, 300, 'r');
-        */
+ 
         timer = new Timer(DELAY, this);
         timer.start();
         lvl = level;
+        Score = score;
     }
     
     @Override
@@ -125,25 +124,7 @@ public class GameBoard extends JPanel implements ActionListener {
                 g2d.drawImage(compTank.tankT, atg, this);
             }
         }
-        
-        /*
-        AffineTransform atg = AffineTransform.getTranslateInstance(grey.Xg+10, grey.Yg+10);
-        atg.rotate((Math.atan2(player1.Y + 25 - grey.Yg, player1.X + 25 - grey.Xg)) + 90, grey.widthgt/2, grey.heightgt/2);
-        g2d.drawImage(grey.tankBG, grey.Xg, grey.Yg, this);
-        g2d.drawImage(grey.tankTG, atg, this);
-        
-        AffineTransform atb = AffineTransform.getTranslateInstance(blue.Xb+10, blue.Yb+10);
-        atb.rotate((Math.atan2(player1.Y + 25 - blue.Yb, player1.X + 25 - blue.Xb)) + 90, blue.widthgt/2, blue.heightgt/2);
-        g2d.drawImage(blue.tankDB, blue.Xb, blue.Yb, this);
-        g2d.drawImage(blue.tankTB, atb, this);
-        
-        AffineTransform atr = AffineTransform.getTranslateInstance(red.Xr+10, red.Yr+10);
-        atr.rotate((Math.atan2(player1.Y + 25 - red.Yr, player1.X + 25 - red.Xr)) + 90, red.widthgt/2, red.heightgt/2);
-        g2d.drawImage(red.tankDR, red.Xr, red.Yr, this);
-        g2d.drawImage(red.tankTR, atr, this);
-        
-        */
-        
+                
         for(AITanks compTank : compTanks){
             List<Bullet> aiShots = compTank.bullets;
             g2d.setColor(Color.black);
@@ -168,9 +149,7 @@ public class GameBoard extends JPanel implements ActionListener {
             compTank.moveAI(player1.X, player1.Y);
             //compTank.aiShoot();
         }
-        //.moveAI(player1.X, player1.Y);
-       // blue.moveAI(player1.X, player1.Y);
-       // red.moveAI(player1.X, player1.Y);
+ 
        
         moveBullets(player1.bullets);
         for(AITanks compTank : compTanks){
@@ -180,30 +159,7 @@ public class GameBoard extends JPanel implements ActionListener {
        levelOver();
     }
     
-    /*
-    private void moveAIBullets()
-    {
-        //grey.aiShoot(player1.X, player1.Y);
-        for(AITanks compTank : compTanks){
-            List<Bullet> aiShots = compTank.bullets;
-            
-            for (int i = 0; i < aiShots.size(); i++) 
-            {
 
-                Bullet bullet = aiShots.get(i);
-
-                if (bullet.isVisible()) 
-                {
-                    bullet.move(wallX, wallY, wallWidth, wallHeight);
-                } 
-                else 
-                {
-                    aiShots.remove(i);
-                }
-            }
-        }
-    }
-    */
     private void moveBullets(List<Bullet> shots){
         //List<Bullet> shots = player1.bullets;
 
@@ -214,6 +170,7 @@ public class GameBoard extends JPanel implements ActionListener {
             for(AITanks compTank : compTanks){
                 if(!bullet.hit(compTank.X, compTank.Y)){
                     compTank.alive = false;
+                    Score +=1;
                     compTank.X = 0;
                     compTank.Y = 0;
                 }
@@ -266,7 +223,6 @@ public class GameBoard extends JPanel implements ActionListener {
     private void levelOver()
     {
         boolean allDead = true;
-        
         for(AITanks compTank : compTanks){
             if(compTank.alive == true){
                 allDead = false;
@@ -275,28 +231,29 @@ public class GameBoard extends JPanel implements ActionListener {
         
         if(allDead)
         {
-            //System.out.println("tanks destoyed");
-            int choice=JOptionPane.showConfirmDialog(null,"CONTINUE?", "LEVEL CLEAR!", JOptionPane.YES_NO_OPTION);
+            int choice=JOptionPane.showConfirmDialog(null,"<html>SCORE: " + Score + "<br>CONTINUE?</html>", "LEVEL CLEAR!", JOptionPane.YES_NO_OPTION);
             if(choice==JOptionPane.YES_OPTION)
             {
+                System.out.println("lvl" + lvl);
                 lvl ++;
-               // System.out.println("lvl " + lvl);
-                JFrame game = new JFrame();
-                game.setTitle("Tanks");
-                game.setSize(1600, 900);
-                game.setResizable(false);
-                game.setVisible(false);
-                game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                JPanel gameBoard = new GameBoard(lvl);
-                game.add(gameBoard);
-                game.setVisible(true);
-                //dispose();
+                System.out.println("lvl ++" + lvl);
+                Tanks.game[lvl] = new JFrame();
+                System.out.println("break here?");
+                Tanks.game[lvl].setTitle("Tanks");
+                Tanks.game[lvl].setSize(1600, 900);
+                Tanks.game[lvl].setResizable(false);
+                Tanks.game[lvl].setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                JPanel gameBoard = new GameBoard(lvl, Score);
+                Tanks.game[lvl].add(gameBoard);
+                Tanks.game[lvl].setVisible(true);
+                Tanks.game[lvl-1].dispose();
                 compTanks[0].alive = true;
-                /*
-                grey.Alive=true;
-                red.Alive=true;
-                blue.Alive=true;
-                */
+            }
+            else if(choice==JOptionPane.NO_OPTION)
+            {
+                compTanks[0].alive = true;
+                new Tanks(); 
+                Tanks.game[lvl].dispose();  
             }
             else
             {

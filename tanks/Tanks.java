@@ -30,6 +30,7 @@ public class Tanks extends JFrame {
     
     private JButton start;
     private JButton exit;
+    public static JFrame[] game;
     
     public Tanks()
     {
@@ -53,23 +54,25 @@ public class Tanks extends JFrame {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+        
     }
     
     private class startListener extends titlePanel implements ActionListener
     {
         public void actionPerformed(ActionEvent e)
         {
-            JFrame game = new JFrame();
-            game.setTitle("Tanks");
+            game = new JFrame[4];
+            game[0] = new JFrame();
+            game[0].setTitle("Tanks");
             
-            game.setSize(1600, 900);
-            game.setResizable(false);
-            game.setVisible(false);
-            game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            JPanel gameBoard = new GameBoard(1);
-            game.add(gameBoard);
+            game[0].setSize(1600, 900);
+            game[0].setResizable(false);
+            game[0].setVisible(false);
+            game[0].setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            JPanel gameBoard = new GameBoard(0,0);
+            game[0].add(gameBoard);
             
-            game.setVisible(true);
+            game[0].setVisible(true);
             dispose();
         }
     }
