@@ -31,7 +31,7 @@ public class Tanks extends JFrame {
     public Tanks()
     {
         JPanel title = new titlePanel();
-        //GameBoard game = new GameBoard();
+        
         add(title);
         start=new JButton("START");
         exit=new JButton("EXIT");
@@ -63,9 +63,8 @@ public class Tanks extends JFrame {
             game.setResizable(false);
             game.setVisible(false);
             game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            JPanel gameBoard = new GameBoard(1);
-            game.add(gameBoard);
-            
+            JPanel gameBoard1 = new GameBoard(1);
+            game.add(gameBoard1);
             game.setVisible(true);
             dispose();
         }

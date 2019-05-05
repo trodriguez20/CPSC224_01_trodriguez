@@ -39,9 +39,8 @@ public class GameBoard extends JPanel implements ActionListener {
     private int[] wallY;
     private int[] wallWidth;
     private int[] wallHeight;
-    /**
-     * @param args the command line arguments
-     */
+    int lvl;
+    
     public GameBoard (int level)
     {
         addKeyListener(new TAdapter());
@@ -59,10 +58,10 @@ public class GameBoard extends JPanel implements ActionListener {
                 wallHeight = new int[]{50,850,100,850,500,600};
                 break;
             case 2:
-                wallX = new int[9];
-                wallY = new int[9];
-                wallWidth = new int[9];
-                wallHeight = new int[9];
+                wallX = new int[]{0,0,0,1545};
+                wallY = new int[]{0,0,800,0};
+                wallWidth = new int[]{1600,50,1600,50};
+                wallHeight = new int[]{50,850,100,850};
                 break;
             default:
                 wallX = new int[8];
@@ -79,7 +78,7 @@ public class GameBoard extends JPanel implements ActionListener {
         
         timer = new Timer(DELAY, this);
         timer.start();
-       
+        lvl=level;
     }
     
     @Override
@@ -92,7 +91,6 @@ public class GameBoard extends JPanel implements ActionListener {
             g.fillRect(wallX[i], wallY[i], wallWidth[i], wallHeight[i]);
         }
         draw(g);
-        
         Toolkit.getDefaultToolkit().sync();
     }
     
@@ -101,13 +99,11 @@ public class GameBoard extends JPanel implements ActionListener {
         
         Graphics2D g2d = (Graphics2D) g;
 
-        //if(player1.Alive)
-        //{
-            AffineTransform at = AffineTransform.getTranslateInstance(player1.X+10, player1.Y+10);
-            at.rotate(player1.angle + 90, player1.widthT/2, player1.heightT/2);
-            g2d.drawImage(player1.tankD, player1.X, player1.Y, this);
-            g2d.drawImage(player1.tankT, at, this);
-        //}
+        AffineTransform at = AffineTransform.getTranslateInstance(player1.X+10, player1.Y+10);
+        at.rotate(player1.angle + 90, player1.widthT/2, player1.heightT/2);
+        g2d.drawImage(player1.tankD, player1.X, player1.Y, this);
+        g2d.drawImage(player1.tankT, at, this);
+        
         
         if(grey.Alive)
         {
@@ -136,6 +132,7 @@ public class GameBoard extends JPanel implements ActionListener {
         for (Bullet shot : playerShots) {
             g2d.fillOval(shot.getX(), shot.getY(), 10, 10);
         }
+
        
     }
     
@@ -147,32 +144,8 @@ public class GameBoard extends JPanel implements ActionListener {
        red.moveAI(player1.X, player1.Y);
        moveBullets();
        repaint();
+       levelOver();
     }
-    
-    /*
-    private void moveAIBullets()
-    {
-        //grey.aiShoot(player1.X, player1.Y);
-        List<Bullet> aiShots = grey.bullets;
-
-        for (int i = 0; i < aiShots.size(); i++) 
-        {
-
-            Bullet bullet = aiShots.get(i);
-
-            if (bullet.isVisible()) 
-            {
-
-                bullet.moveX();
-                bullet.moveY();
-            } 
-            else 
-            {
-                aiShots.remove(i);
-            }
-        }
-    }
-//*/
     
     private void moveBullets()
     {
@@ -209,7 +182,6 @@ public class GameBoard extends JPanel implements ActionListener {
             } 
             else 
             {
-                //grey.Alive=bullet.hit(grey.Xg, grey.Yg);
                 shots.remove(i);
             }
         }
@@ -249,21 +221,35 @@ public class GameBoard extends JPanel implements ActionListener {
             player1.keyPressed(e);
         }
     }
-    /*
+
     private void levelOver()
     {
         if(!grey.Alive && !red.Alive && !blue.Alive)
         {
+            //System.out.println("tanks destoyed");
             int choice=JOptionPane.showConfirmDialog(null,"CONTINUE?", "LEVEL CLEAR!", JOptionPane.YES_NO_OPTION);
             if(choice==JOptionPane.YES_OPTION)
             {
-                GameBoard(2);
+                lvl ++;
+               // System.out.println("lvl " + lvl);
+                JFrame game = new JFrame();
+                game.setTitle("Tanks");
+                game.setSize(1600, 900);
+                game.setResizable(false);
+                game.setVisible(false);
+                game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                JPanel gameBoard = new GameBoard(lvl);
+                game.add(gameBoard);
+                game.setVisible(true);
+                //dispose();
+                grey.Alive=true;
+                red.Alive=true;
+                blue.Alive=true;
             }
             else
             {
-
+                
             }
         }
     }
-//*/
 }
