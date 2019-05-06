@@ -59,7 +59,7 @@ public class GameBoard extends JPanel implements ActionListener {
                 wallHeight = new int[]{50,850,100,850,200,250,50,50,150};
                 compTanks = new AITanks[3];
                 compTanks[0] = new AITanks(1400, 100, 'g', wallX, wallY, wallWidth, wallHeight);
-                compTanks[1] = new AITanks(1400, 600, 'g', wallX, wallY, wallWidth, wallHeight);
+                compTanks[1] = new AITanks(1400, 700, 'g', wallX, wallY, wallWidth, wallHeight);
                 compTanks[2] = new AITanks(900, 400, 'g', wallX, wallY, wallWidth, wallHeight);
                 player1.X=100;
                 player1.Y=100;
@@ -144,14 +144,19 @@ public class GameBoard extends JPanel implements ActionListener {
         
         for(AITanks compTank : compTanks){
             List<Bullet> aiShots = compTank.bullets;
-            g2d.setColor(Color.black);
+            if(compTank.type == 'g')
+                g2d.setColor(Color.black);
+            else if(compTank.type == 'b')
+                g2d.setColor(Color.blue);
+            else if(compTank.type == 'r')
+                g2d.setColor(Color.red);
             for (Bullet shot : aiShots) {
                 g2d.fillOval(shot.getX(), shot.getY(), 10, 10);
             }
         }
         
         List<Bullet> playerShots = player1.bullets;
-        g2d.setColor(Color.black);
+        g2d.setColor(Color.green);
         for (Bullet shot : playerShots) {
             g2d.fillOval(shot.getX(), shot.getY(), 10, 10);
         }

@@ -166,7 +166,12 @@ public class AITanks implements ActionListener
                 test.move(wallX, wallY, wallWidth, wallHeight);
             }
             if(test.isVisible())
-                bullets.add(new Bullet(X+width/2, Y + height/2, xPlayer, yPlayer, 1, 8));
+                if(type == 'g')
+                    bullets.add(new Bullet(X+width/2, Y + height/2, xPlayer, yPlayer, 1, 8));
+                else if(type == 'b')
+                    bullets.add(new Bullet(X+width/2, Y + height/2, xPlayer, yPlayer, 0, 6));
+                else if(type == 'r')
+                    bullets.add(new Bullet(X+width/2, Y + height/2, xPlayer, yPlayer, 1, 12));
         }
     }
     
