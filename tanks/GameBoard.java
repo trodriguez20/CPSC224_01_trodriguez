@@ -48,27 +48,34 @@ public class GameBoard extends JPanel implements ActionListener {
         setBackground(new Color(235, 232, 145));
         setFocusable(true);
         
+        player1 = new Player();
+        
         switch (level) 
         {
             case 0:
-                wallX = new int[]{0,0,0,1545,400,1100};
-                wallY = new int[]{0,0,800,0,50,400};
-                wallWidth = new int[]{1600,50,1600,50,50,50};
-                wallHeight = new int[]{50,850,100,850,500,600};
+                wallX = new int[]{0,0,0,1545,400,400,600,600,1150};
+                wallY = new int[]{0,0,800,0,50,600,200,600,350};
+                wallWidth = new int[]{1600,50,1600,50,50,50,600,600,50};
+                wallHeight = new int[]{50,850,100,850,200,250,50,50,150};
                 compTanks = new AITanks[3];
                 compTanks[0] = new AITanks(1400, 100, 'g', wallX, wallY, wallWidth, wallHeight);
-                compTanks[1] = new AITanks(1400, 600, 'b', wallX, wallY, wallWidth, wallHeight);
-                compTanks[2] = new AITanks(1400, 300, 'r', wallX, wallY, wallWidth, wallHeight);
+                compTanks[1] = new AITanks(1400, 600, 'g', wallX, wallY, wallWidth, wallHeight);
+                compTanks[2] = new AITanks(800, 400, 'g', wallX, wallY, wallWidth, wallHeight);
+                player1.X=100;
+                player1.Y=100;
                 break;
             case 1:
-                wallX = new int[]{0,0,0,1545,400};
-                wallY = new int[]{0,0,800,0,50};
-                wallWidth = new int[]{1600,50,1600,50,50};
-                wallHeight = new int[]{50,850,100,850,500};
-                compTanks = new AITanks[3];
-                compTanks[0] = new AITanks(1400, 100, 'g', wallX, wallY, wallWidth, wallHeight);
-                compTanks[1] = new AITanks(1400, 600, 'b', wallX, wallY, wallWidth, wallHeight);
-                compTanks[2] = new AITanks(1400, 300, 'r', wallX, wallY, wallWidth, wallHeight);
+                wallX = new int[]{0,0,0,1545,250,50,400};
+                wallY = new int[]{0,0,800,0,600,400,600};
+                wallWidth = new int[]{1600,50,1600,50,50,250,400};
+                wallHeight = new int[]{50,850,100,850,300,50,50};
+                compTanks = new AITanks[4];
+                compTanks[0] = new AITanks(1400, 700, 'g', wallX, wallY, wallWidth, wallHeight);
+                compTanks[1] = new AITanks(800, 450, 'g', wallX, wallY, wallWidth, wallHeight);
+                compTanks[2] = new AITanks(200, 300, 'b', wallX, wallY, wallWidth, wallHeight);
+                compTanks[3] = new AITanks(1300, 200, 'b', wallX, wallY, wallWidth, wallHeight);
+                player1.X=100;
+                player1.Y=750;
                 break;
             default:
                 wallX = new int[]{0,0,0,1545};
@@ -82,10 +89,10 @@ public class GameBoard extends JPanel implements ActionListener {
                 compTanks[3] = new AITanks(1400, 100, 'g', wallX, wallY, wallWidth, wallHeight);
                 compTanks[4] = new AITanks(1400, 600, 'b', wallX, wallY, wallWidth, wallHeight);
                 compTanks[5] = new AITanks(1400, 300, 'r', wallX, wallY, wallWidth, wallHeight);
+                player1.X=100;
+                player1.Y=200;
                 break;
         }
-        
-        player1 = new Player();
         
         timer = new Timer(DELAY, this);
         timer.start();

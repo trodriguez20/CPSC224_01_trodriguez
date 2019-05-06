@@ -31,6 +31,8 @@ public class AITanks implements ActionListener
     BufferedImage tankT;
     int X;
     int Y;
+    int x;
+    int y;
     int xPlayer = 0;
     int yPlayer = 0;
     int width;
@@ -74,6 +76,8 @@ public class AITanks implements ActionListener
                     tankIcon = new ImageIcon("blueTankB.png");
                     tankIconS = new ImageIcon("blueTankS.png");
                     tankT = ImageIO.read(new File("blueT.png"));
+                    this.x=X;
+                    this.y=Y;
                     break;
                 case 'r':
                     tankIcon = new ImageIcon("redTankB.png");
@@ -120,22 +124,22 @@ public class AITanks implements ActionListener
         int dx = 0;
         int dy = 0;
         
-        if(X != 1300 && Y > 599)
+        if(X != (x-100) && Y > (y-1))
         {
             dx-=2;
             tankB=tankS;
         }
-        else if(X < 1350 && Y != 500)
+        else if(X < (x-50) && Y != (y-100))
         {
             dy-=2;
             tankB=tankImage;
         }
-        else if(Y < 550 && X != 1402)
+        else if(Y < (y-50) && X != (x+2))
         {
             dx+=2;
             tankB=tankS;
         }
-        else if(X > 1401 && Y != 600)
+        else if(X > (x+1) && Y != y)
         {
             dy+=2; 
             tankB=tankImage;

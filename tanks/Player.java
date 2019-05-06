@@ -24,8 +24,8 @@ import javax.imageio.ImageIO;
 public class Player {
     
     private int dx, dy;
-    int X = 100;
-    int Y = 60;
+    int X;
+    int Y;
     int width;
     int height;
     int widthT;
