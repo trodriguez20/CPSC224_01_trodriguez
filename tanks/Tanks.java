@@ -61,7 +61,7 @@ public class Tanks extends JFrame {
     {
         public void actionPerformed(ActionEvent e)
         {
-            game = new JFrame[4];
+            game = new JFrame[3];
             game[0] = new JFrame();
             game[0].setTitle("Tanks");
             
