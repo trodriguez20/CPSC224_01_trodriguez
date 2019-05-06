@@ -118,15 +118,19 @@ public class GameBoard extends JPanel implements ActionListener {
     {
         
         Graphics2D g2d = (Graphics2D) g;
+        boolean allDead = true;
         
         for (AITanks compTank : compTanks) {
             g2d.drawImage(compTank.tankB, compTank.X, compTank.Y, this);
             if(compTank.alive){
+                allDead = false;
                 AffineTransform atg = AffineTransform.getTranslateInstance(compTank.X + 10, compTank.Y + 10);
                 atg.rotate((Math.atan2(player1.Y + 25 - (compTank.Y+10), player1.X + 25 - (compTank.X+10))) + (Math.PI/2), compTank.widthT / 2, compTank.heightT / 2);
                 g2d.drawImage(compTank.tankT, atg, this);
             }
         }
+        if(allDead)
+            levelWon();
         
         g2d.drawImage(player1.tankD, player1.X, player1.Y, this);
         if(player1.alive){
@@ -168,7 +172,6 @@ public class GameBoard extends JPanel implements ActionListener {
             moveBullets(compTank.bullets);
         }
        repaint();
-       //levelOver();
     }
     
     private void moveBullets(List<Bullet> shots){
@@ -183,8 +186,6 @@ public class GameBoard extends JPanel implements ActionListener {
                         compTank.alive = false;
                         Score += 1;
                         compTank.tankB = compTank.explosion;
-                        repaint();
-                        levelWon();
                     }
             }
             
@@ -240,46 +241,36 @@ public class GameBoard extends JPanel implements ActionListener {
     }
     
     private void levelWon(){
-        boolean allDead = true;
-        
-        for(AITanks compTank : compTanks){
-            if(compTank.alive){
-                allDead = false;
-            }
-        }
-        
-        if(allDead)
+        timer.stop();
+        compTanks[0].alive = true;
+        if(lvl<2)
         {
-            compTanks[0].alive = true;
-            if(lvl<2)
+            int choice=JOptionPane.showConfirmDialog(null,"<html>SCORE: " + Score + "<br>CONTINUE?</html>", "LEVEL CLEAR!", JOptionPane.YES_NO_OPTION);
+            if(choice==JOptionPane.YES_OPTION)
             {
-                int choice=JOptionPane.showConfirmDialog(null,"<html>SCORE: " + Score + "<br>CONTINUE?</html>", "LEVEL CLEAR!", JOptionPane.YES_NO_OPTION);
-                if(choice==JOptionPane.YES_OPTION)
-                {
-                    lvl ++;
-                    remakeLevel();
-                    Tanks.game[lvl - 1].dispose();
-                }
-                else if(choice==JOptionPane.NO_OPTION)
-                {
-                    Tanks.game[lvl].dispose(); 
-                    Tanks tanks = new Tanks();
-                }
-            } else {
-                int choice1=JOptionPane.showConfirmDialog(null,"<html>SCORE: " + Score + "<br>PLAY AGAIN?</html>", "YOU WIN!", JOptionPane.YES_NO_OPTION);
-                if(choice1==JOptionPane.YES_OPTION)
-                {
-                    int level = lvl;
-                    lvl = 0;
-                    scoreprev = 0;
-                    remakeLevel();
-                    Tanks.game[level].dispose();
-                }
-                else if(choice1==JOptionPane.NO_OPTION)
-                {
-                    Tanks.game[lvl].dispose();
-                    Tanks tanks = new Tanks(); 
-                }
+                lvl ++;
+                remakeLevel();
+                Tanks.game[lvl - 1].dispose();
+            }
+            else if(choice==JOptionPane.NO_OPTION)
+            {
+                Tanks.game[lvl].dispose(); 
+                Tanks tanks = new Tanks();
+            }
+        } else {
+            int choice1=JOptionPane.showConfirmDialog(null,"<html>SCORE: " + Score + "<br>PLAY AGAIN?</html>", "YOU WIN!", JOptionPane.YES_NO_OPTION);
+            if(choice1==JOptionPane.YES_OPTION)
+            {
+                int level = lvl;
+                lvl = 0;
+                scoreprev = 0;
+                remakeLevel();
+                Tanks.game[level].dispose();
+            }
+            else if(choice1==JOptionPane.NO_OPTION)
+            {
+                Tanks.game[lvl].dispose();
+                Tanks tanks = new Tanks(); 
             }
         }
     }
@@ -311,103 +302,4 @@ public class GameBoard extends JPanel implements ActionListener {
         Tanks.game[lvl].add(gameBoard);
         Tanks.game[lvl].setVisible(true);
     }
-    
-//    private void levelOver()
-//    {
-//        boolean allDead = true;
-//        boolean playerDead = false;
-//        for(AITanks compTank : compTanks){
-//            if(compTank.alive == true){
-//                allDead = false;
-//            }
-//        }
-        
-//        if(!player1.alive)
-//        {
-//            playerDead=true;
-//        }
-        
-//        if(playerDead)
-//        {
-//            player1.alive=true;
-//            playerDead = false;
-//            int choice2=JOptionPane.showConfirmDialog(null,"<html>SCORE: " + Score + "<br>TRY AGAIN?</html>", "GAME OVER!", JOptionPane.YES_NO_OPTION);
-//            if(choice2==JOptionPane.YES_OPTION)
-//            {
-//                compTanks[0].alive = true;
-//                Tanks.game[lvl].dispose();
-//                Tanks.game[lvl] = new JFrame();
-//                Tanks.game[lvl].setTitle("Tanks");
-//                Tanks.game[lvl].setSize(1600, 900);
-//                Tanks.game[lvl].setResizable(false);
-//                Tanks.game[lvl].setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//                JPanel gameBoard = new GameBoard(lvl, scoreprev);
-//                Tanks.game[lvl].add(gameBoard);
-//                Tanks.game[lvl].setVisible(true);
-//            }
-//            else if(choice2==JOptionPane.NO_OPTION)
-//            {
-//                    //compTanks[0].alive = true;
-//                    Tanks.game[lvl].dispose();
-//                    new Tanks(); 
-//            }
-//            else
-//            {
-//                
-//            }
-//        }
-        
-//        if(allDead)
-//        {
-//            if(lvl<2)
-//            {
-//                int choice=JOptionPane.showConfirmDialog(null,"<html>SCORE: " + Score + "<br>CONTINUE?</html>", "LEVEL CLEAR!", JOptionPane.YES_NO_OPTION);
-//                if(choice==JOptionPane.YES_OPTION)
-//                {
-//                    lvl ++;
-//                    Tanks.game[lvl] = new JFrame();
-//                    Tanks.game[lvl].setTitle("Tanks");
-//                    Tanks.game[lvl].setSize(1600, 900);
-//                    Tanks.game[lvl].setResizable(false);
-//                    Tanks.game[lvl].setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//                    JPanel gameBoard = new GameBoard(lvl, Score);
-//                    Tanks.game[lvl].add(gameBoard);
-//                    Tanks.game[lvl].setVisible(true);
-//                    Tanks.game[lvl-1].dispose();
-//                    compTanks[0].alive = true;
-//                    //player1.alive=true;
-//                }
-//                else if(choice==JOptionPane.NO_OPTION)
-//                {
-//                    compTanks[0].alive = true;
-//                   // player1.alive=true;
-//                    new Tanks(); 
-//                    Tanks.game[lvl].dispose();  
-//                }
-//            } else {
-//                int choice1=JOptionPane.showConfirmDialog(null,"<html>SCORE: " + Score + "<br>PLAY AGAIN?</html>", "YOU WIN!", JOptionPane.YES_NO_OPTION);
-//                if(choice1==JOptionPane.YES_OPTION)
-//                {
-//                    Tanks.game[0] = new JFrame();
-//                    Tanks.game[0].setTitle("Tanks");
-//                    Tanks.game[0].setSize(1600, 900);
-//                    Tanks.game[0].setResizable(false);
-//                    Tanks.game[0].setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//                    JPanel gameBoard = new GameBoard(0, 0);
-//                    Tanks.game[0].add(gameBoard);
-//                    Tanks.game[0].setVisible(true);
-//                    Tanks.game[lvl].dispose();
-//                    compTanks[0].alive = true;
-//                    //player1.alive=true;
-//                }
-//                else if(choice1==JOptionPane.NO_OPTION)
-//                {
-//                    compTanks[0].alive = true;
-//                    //player1.alive=true;
-//                    new Tanks(); 
-//                    Tanks.game[lvl].dispose();
-//                }
-//            }
-//        }
-//    }
 }
