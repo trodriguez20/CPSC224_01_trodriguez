@@ -5,22 +5,11 @@
  */
 package tanks;
 
-import java.awt.EventQueue;
 import java.awt.event.*;
-import java.awt.Graphics;
-import java.awt.Color;
-import java.awt.PopupMenu;
-import java.util.Random;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
-import javax.swing.Timer;
 import javax.swing.*;
 import java.awt.*;
-import java.io.*;
-import java.awt.image.BufferedImage;
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-import javax.imageio.*;
 
 /**
  *
@@ -59,6 +48,7 @@ public class Tanks extends JFrame {
     
     private class startListener extends titlePanel implements ActionListener
     {
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             game = new JFrame[3];
@@ -68,7 +58,7 @@ public class Tanks extends JFrame {
             game[0].setSize(1600, 900);
             game[0].setResizable(false);
             game[0].setVisible(false);
-            game[0].setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            game[0].setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             JPanel gameBoard = new GameBoard(0,0);
             game[0].add(gameBoard);
             
@@ -79,6 +69,7 @@ public class Tanks extends JFrame {
     
     private class exitListener extends JButton implements ActionListener
     {
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             System.exit(0);
@@ -86,7 +77,7 @@ public class Tanks extends JFrame {
     }
     
     public static void main(String[] args) {
-        new Tanks();
+        Tanks tanks = new Tanks();
     }
     
 }
