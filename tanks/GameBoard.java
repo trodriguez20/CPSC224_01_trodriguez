@@ -60,15 +60,15 @@ public class GameBoard extends JPanel implements ActionListener {
                 compTanks = new AITanks[3];
                 compTanks[0] = new AITanks(1400, 100, 'g', wallX, wallY, wallWidth, wallHeight);
                 compTanks[1] = new AITanks(1400, 600, 'g', wallX, wallY, wallWidth, wallHeight);
-                compTanks[2] = new AITanks(800, 400, 'g', wallX, wallY, wallWidth, wallHeight);
+                compTanks[2] = new AITanks(900, 400, 'g', wallX, wallY, wallWidth, wallHeight);
                 player1.X=100;
                 player1.Y=100;
                 break;
             case 1:
-                wallX = new int[]{0,0,0,1545,250,50,400};
-                wallY = new int[]{0,0,800,0,600,400,600};
-                wallWidth = new int[]{1600,50,1600,50,50,250,400};
-                wallHeight = new int[]{50,850,100,850,300,50,50};
+                wallX = new int[]{0,0,0,1545,250,50,500,1100,1100};
+                wallY = new int[]{0,0,800,0,600,400,600,200,400};
+                wallWidth = new int[]{1600,50,1600,50,50,250,600,50,200};
+                wallHeight = new int[]{50,850,100,850,300,50,50,200,50};
                 compTanks = new AITanks[4];
                 compTanks[0] = new AITanks(1400, 700, 'g', wallX, wallY, wallWidth, wallHeight);
                 compTanks[1] = new AITanks(800, 450, 'g', wallX, wallY, wallWidth, wallHeight);
@@ -78,19 +78,19 @@ public class GameBoard extends JPanel implements ActionListener {
                 player1.Y=750;
                 break;
             default:
-                wallX = new int[]{0,0,0,1545};
-                wallY = new int[]{0,0,800,0};
-                wallWidth = new int[]{1600,50,1600,50};
-                wallHeight = new int[]{50,850,100,850};
+                wallX = new int[]{0,0,0,1545,50,550,1050,350,850,1350,200};
+                wallY = new int[]{0,0,800,0,200,200,200,600,600,600,350};
+                wallWidth = new int[]{1600,50,1600,50,300,300,200,300,300,250,50};
+                wallHeight = new int[]{50,850,100,850,50,50,50,50,50,50,200};
                 compTanks = new AITanks[6];
-                compTanks[0] = new AITanks(700, 100, 'g', wallX, wallY, wallWidth, wallHeight);
-                compTanks[1] = new AITanks(700, 600, 'r', wallX, wallY, wallWidth, wallHeight);
-                compTanks[2] = new AITanks(700, 300, 'r', wallX, wallY, wallWidth, wallHeight);
-                compTanks[3] = new AITanks(1400, 100, 'g', wallX, wallY, wallWidth, wallHeight);
-                compTanks[4] = new AITanks(1400, 600, 'b', wallX, wallY, wallWidth, wallHeight);
-                compTanks[5] = new AITanks(1400, 300, 'r', wallX, wallY, wallWidth, wallHeight);
+                compTanks[0] = new AITanks(425, 100, 'g', wallX, wallY, wallWidth, wallHeight);
+                compTanks[1] = new AITanks(425, 725, 'g', wallX, wallY, wallWidth, wallHeight);
+                compTanks[2] = new AITanks(650, 450, 'b', wallX, wallY, wallWidth, wallHeight);
+                compTanks[3] = new AITanks(1250, 450, 'b', wallX, wallY, wallWidth, wallHeight);
+                compTanks[4] = new AITanks(925, 100, 'r', wallX, wallY, wallWidth, wallHeight);
+                compTanks[5] = new AITanks(1300, 725, 'r', wallX, wallY, wallWidth, wallHeight);
                 player1.X=100;
-                player1.Y=200;
+                player1.Y=450;
                 break;
         }
         
@@ -263,7 +263,7 @@ public class GameBoard extends JPanel implements ActionListener {
             {
                 int level = lvl;
                 lvl = 0;
-                scoreprev = 0;
+                Score = 0;
                 remakeLevel();
                 Tanks.game[level].dispose();
             }
