@@ -35,7 +35,7 @@ public class Player {
     Image tankImage;
     Image tankD;
     Image tankS;
-    
+    Image deadTank;
     BufferedImage tankT;
     Point turretPos = new Point(X, Y);
     double angle = 0;
@@ -43,9 +43,11 @@ public class Player {
     public Player()
     {
         ImageIcon tankIcon = new ImageIcon("tankBottom.png");
-        //ImageIcon tankTurret = new ImageIcon("tankTop.png");
+        ImageIcon deadIcon = null;
         ImageIcon tankIconS = new ImageIcon("tankBottomS.png");
+        deadIcon = new ImageIcon("deadTank.png");
         tankImage = tankIcon.getImage();
+        deadTank = deadIcon.getImage();
         try{
             tankT = ImageIO.read(new File("tankTop.png"));
         } catch(IOException e) {

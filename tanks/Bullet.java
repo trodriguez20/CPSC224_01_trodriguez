@@ -5,6 +5,8 @@
  */
 package tanks;
 
+//import java.io.*;
+//import sun.audio.*;
 /**
  *
  * @author Jared
@@ -19,6 +21,9 @@ public class Bullet {
     protected boolean visible;
     protected int bounce;
     protected double angle;
+//    AudioStream boom;
+//    AudioStream shoot;
+//    AudioStream ricochet;
     
     public Bullet(int x, int y, int mouseX, int mouseY, int bounce, int speed){
         int length = mouseX - x + 20;
@@ -31,6 +36,8 @@ public class Bullet {
         this.bounce = bounce;
         visible = true;
         this.speed = speed;
+        
+        //InputStream boomFile = new FileInputStream("");
     }
     
     public void move(int[] wallX, int[] wallY, int[] wallWidth, int[] wallHeight){

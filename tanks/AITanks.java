@@ -26,6 +26,8 @@ public class AITanks implements ActionListener
     Image tankB;
     Image tankS;
     Image tankImage;
+    Image explosion;
+    Image deadTank;
     BufferedImage tankT;
     int X;
     int Y;
@@ -57,6 +59,10 @@ public class AITanks implements ActionListener
         this.type = type;
         ImageIcon tankIcon = null;
         ImageIcon tankIconS = null;
+        ImageIcon explosionIcon = null;
+        ImageIcon deadIcon = null;
+        explosionIcon = new ImageIcon("explosion.png");
+        deadIcon = new ImageIcon("deadTank.png");
         try{
             switch (type) {
                 case 'g':
@@ -84,6 +90,8 @@ public class AITanks implements ActionListener
         tankImage = tankIcon.getImage();
         tankB = tankImage;
         tankS = tankIconS.getImage();
+        explosion = explosionIcon.getImage();
+        deadTank = deadIcon.getImage();
         
         width = tankB.getWidth(null);
         height = tankB.getHeight(null);
@@ -105,8 +113,6 @@ public class AITanks implements ActionListener
         } else if(type == 'r'){
             moveRed(xp, yp);
         }
-        //if(alive)
-            //aiShoot();
     }
     
     public void moveBlue()
@@ -201,7 +207,12 @@ public class AITanks implements ActionListener
     
     @Override
     public void actionPerformed(ActionEvent ae) {
-        if(this.alive)
+        if(this.alive){
             this.aiShoot();
+        }
+        else{
+            this.tankB = this.deadTank;
+            this.aitimer.stop();
+        }
     }
 }

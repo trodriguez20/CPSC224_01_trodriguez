@@ -24,10 +24,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-
 public class GameBoard extends JPanel implements ActionListener {
     
-    private Timer timer;
+    private final Timer timer;
     public Player player1;
     int Score;
     int scoreprev;
@@ -92,7 +91,6 @@ public class GameBoard extends JPanel implements ActionListener {
         timer.start();
         lvl = level;
         Score = scoreprev = score;
-        System.out.println("current lvl: " + lvl);
     }
     
     @Override
@@ -113,23 +111,25 @@ public class GameBoard extends JPanel implements ActionListener {
     {
         
         Graphics2D g2d = (Graphics2D) g;
-
-        if(player1.alive)
-        {
-            AffineTransform at = AffineTransform.getTranslateInstance(player1.X+10, player1.Y+10);
-            at.rotate(player1.angle + (Math.PI/2), player1.widthT/2, player1.heightT/2);
-            g2d.drawImage(player1.tankD, player1.X, player1.Y, this);
-            g2d.drawImage(player1.tankT, at, this);
-        }
         
         for (AITanks compTank : compTanks) {
+            g2d.drawImage(compTank.tankB, compTank.X, compTank.Y, this);
             if(compTank.alive){
                 AffineTransform atg = AffineTransform.getTranslateInstance(compTank.X + 10, compTank.Y + 10);
                 atg.rotate((Math.atan2(player1.Y + 25 - (compTank.Y+10), player1.X + 25 - (compTank.X+10))) + (Math.PI/2), compTank.widthT / 2, compTank.heightT / 2);
-                g2d.drawImage(compTank.tankB, compTank.X, compTank.Y, this);
                 g2d.drawImage(compTank.tankT, atg, this);
             }
         }
+        
+        if(player1.alive){
+            AffineTransform at = AffineTransform.getTranslateInstance(player1.X+10, player1.Y+10);
+            at.rotate(player1.angle + (Math.PI/2), player1.widthT/2, player1.heightT/2);
+            g2d.drawImage(player1.tankD, player1.X, player1.Y, this);
+            g2d.drawImage(player1.tankT, at, this);   
+        } else {
+            g2d.drawImage(player1.deadTank, player1.X, player1.Y, this);
+        }
+        
         
         for(AITanks compTank : compTanks){
             List<Bullet> aiShots = compTank.bullets;
@@ -152,8 +152,8 @@ public class GameBoard extends JPanel implements ActionListener {
     {
         player1.move(wallX, wallY, wallWidth, wallHeight);
         for (AITanks compTank : compTanks) {
-            compTank.moveAI(player1.X, player1.Y);
-            //compTank.aiShoot();
+            if(compTank.alive)
+                compTank.moveAI(player1.X, player1.Y);
         }
        
         moveBullets(player1.bullets);
@@ -171,19 +171,16 @@ public class GameBoard extends JPanel implements ActionListener {
             Bullet bullet = shots.get(i);
             
             for(AITanks compTank : compTanks){
-                if(bullet.hit(compTank.X, compTank.Y)){
-                    compTank.alive = false;
-                    Score += 1;
-                    compTank.X = 0;
-                    compTank.Y = 0;
-                }
+                if(compTank.alive)
+                    if(bullet.hit(compTank.X, compTank.Y)){
+                        compTank.alive = false;
+                        Score += 1;
+                        compTank.tankB = compTank.explosion;
+                    }
             }
             
-            if(bullet.hit(player1.X, player1.Y)){
+            if(bullet.hit(player1.X, player1.Y))
                 player1.alive = false;
-                player1.X = 0;
-                player1.Y = 0;
-            }
             
             if (bullet.isVisible()) {
 
