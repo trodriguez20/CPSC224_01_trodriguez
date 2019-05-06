@@ -25,17 +25,19 @@ public class titlePanel extends JPanel{
     private Image title;
     private Image tank;
     private Image mascot;
+    private Image bg;
     //private JButton start;
     //private JButton Exit;
        
     public titlePanel()
     {
-        setBackground(new Color(204, 204, 204));
+        //setBackground(new Color(204, 204, 204));
         try
         {
             title = ImageIO.read(new File("title.png"));
             tank = ImageIO.read(new File("tank.png"));
             mascot = ImageIO.read(new File("mascot.png"));
+            bg = ImageIO.read(new File("BG.png"));
         }
         catch(IOException e)
         {
@@ -47,8 +49,9 @@ public class titlePanel extends JPanel{
        
     public void paint( Graphics g )
     {
-        g.drawImage(tank, 150, -100, null);
+        g.drawImage(bg, 0, -50, null);
+        g.drawImage(tank, 0, -50, null);
         g.drawImage(mascot, 0, -50, null);
-        g.drawImage(title, 425, 100, null);
+        g.drawImage(title, 0, -50, null);
     }
 }
