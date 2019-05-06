@@ -29,6 +29,7 @@ public class AITanks implements ActionListener
     Image explosion;
     Image deadTank;
     BufferedImage tankT;
+    int clipSize = 1;
     int X;
     int Y;
     int x;
@@ -78,6 +79,7 @@ public class AITanks implements ActionListener
                     tankT = ImageIO.read(new File("blueT.png"));
                     this.x=X;
                     this.y=Y;
+                    clipSize++;
                     break;
                 case 'r':
                     tankIcon = new ImageIcon("redTankB.png");
@@ -159,7 +161,7 @@ public class AITanks implements ActionListener
     
     public void aiShoot()
     {
-        if(bullets.size()<1)
+        if(bullets.size()<clipSize)
         {
             Bullet test = new Bullet(X+width/2, Y + height/2, xPlayer, yPlayer, 1, 50);
             while(test.isVisible() && (Math.abs(test.getX() - xPlayer) > 100 || Math.abs(test.getY() - yPlayer) > 100)){
@@ -181,7 +183,7 @@ public class AITanks implements ActionListener
         int dyr=0;
         
         
-        if(x>X-200 && x<X+200)
+        if(x>X-300 && x<X+300)
         {
             if(y > Y)
                 dyr+=1;
@@ -190,7 +192,7 @@ public class AITanks implements ActionListener
             tankB=tankImage;
         }
         
-        if(y>Y-200 && y<Y+200)
+        if(y>Y-300 && y<Y+00)
         {
             if(x > X)
                 dxr+=1;

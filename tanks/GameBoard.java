@@ -156,7 +156,7 @@ public class GameBoard extends JPanel implements ActionListener {
         }
         
         List<Bullet> playerShots = player1.bullets;
-        g2d.setColor(Color.green);
+        g2d.setColor(new Color(26, 134, 58));
         for (Bullet shot : playerShots) {
             g2d.fillOval(shot.getX(), shot.getY(), 10, 10);
         }
